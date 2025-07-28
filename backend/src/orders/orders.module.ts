@@ -1,0 +1,12 @@
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Order } from './order.entity';
+import { OrderItem } from './order-item.entity';
+
+/* The OrdersModule class is a TypeScript module that imports and exports TypeOrmModule with Order and
+OrderItem entities. */
+@Module({
+  imports: [TypeOrmModule.forFeature([Order, OrderItem])],
+  exports: [TypeOrmModule],
+})
+export class OrdersModule {}
