@@ -16,13 +16,14 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
-
+import { FirebaseModule } from './firebase/firebase.module';
 
 console.log('DB_PASSWORD:', process.env.DB_PASSWORD); 
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    FirebaseModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -40,6 +41,7 @@ console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
       playground: true,
       debug: true,      
       sortSchema: true,
+      context: ({ req }) => ({ req }), 
     }),
     
     UsersModule,

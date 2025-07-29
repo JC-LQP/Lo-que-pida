@@ -1,29 +1,40 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { User } from './user.entity';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { UsersService } from './users.service';
+import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
-import { DeleteUserInput } from './dto/delete-user.input';
+import { UpdateUserInput } from './dto/update-user.input';
+import { UseGuards } from '@nestjs/common';
+import { FirebaseAuthGuard } from 'src/auth/guards/firebase-auth.guard';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 
-
-/* The UsersResolver class in TypeScript defines resolver methods for querying and mutating user data. */
 @Resolver(() => User)
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  @Query(() => [User])
-  async users(): Promise<User[]> {
+  @Mutation(() => User)
+  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+    return this.usersService.create(createUserInput);
+  }
+
+  @Query(() => [User], { name: 'users' })
+  @UseGuards(FirebaseAuthGuard)
+  findAll(@CurrentUser() user: any) {
+    console.log('Current User:', user);
     return this.usersService.findAll();
   }
 
-  @Mutation(() => User)
-  createUser(@Args('input') input: CreateUserInput): Promise<User> {
-  return this.usersService.create(input);
+  @Query(() => User, { name: 'user' })
+  findOne(@Args('id', { type: () => Int }) id: number) {
+    return this.usersService.findOne(id);
   }
 
-    @Mutation(() => Boolean)
-  async deleteUser(
-    @Args('input') input: DeleteUserInput,
-  ): Promise<boolean> {
-    return this.usersService.deleteUser(input.id);
+  @Mutation(() => User)
+  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
+    return this.usersService.update(updateUserInput.id, updateUserInput);
+  }
+
+  @Mutation(() => User)
+  removeUser(@Args('id', { type: () => Int }) id: number) {
+    return this.usersService.remove(id);
   }
 }

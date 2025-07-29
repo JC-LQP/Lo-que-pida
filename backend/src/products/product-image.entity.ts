@@ -6,6 +6,8 @@ import {
 } from 'typeorm';
 import { Product } from './product.entity';
 
+/* The class `ProductImage` represents an entity for product images with properties for id, product
+relationship, and image URL. */
 @Entity({ name: 'product_images' })
 export class ProductImage {
   @PrimaryGeneratedColumn('uuid')
