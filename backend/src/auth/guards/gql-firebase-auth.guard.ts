@@ -17,20 +17,20 @@ export class GqlFirebaseAuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const ctx = GqlExecutionContext.create(context).getContext();
-    const authHeader = ctx.req.headers.authorization;
+    const authHeader: string | undefined = ctx.req.headers?.authorization;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw new UnauthorizedException('Token de autorización no proporcionado');
+    if (!authHeader?.startsWith('Bearer ')) {
+      throw new UnauthorizedException('No se proporcionó un token válido');
     }
 
-    const token = authHeader.replace('Bearer ', '');
+    const token = authHeader.slice(7).trim();
 
     try {
       const decodedToken = await this.firebaseApp.auth().verifyIdToken(token);
       ctx.user = decodedToken;
       return true;
     } catch (error) {
-      throw new UnauthorizedException('Token Firebase inválido o expirado');
+      throw new UnauthorizedException('Token de Firebase inválido o expirado');
     }
   }
 }
