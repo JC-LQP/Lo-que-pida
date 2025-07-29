@@ -61,5 +61,5 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 backend/src/firebase/firebase.serviceAccountKey.json
 
 # Token files
-*.get-token
+backend/get-token.js
 
