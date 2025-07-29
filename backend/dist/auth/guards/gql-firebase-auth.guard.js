@@ -12,11 +12,11 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FirebaseAuthGuard = void 0;
+exports.GqlFirebaseAuthGuard = void 0;
 const common_1 = require("@nestjs/common");
-const admin = require("firebase-admin");
 const graphql_1 = require("@nestjs/graphql");
-let FirebaseAuthGuard = class FirebaseAuthGuard {
+const admin = require("firebase-admin");
+let GqlFirebaseAuthGuard = class GqlFirebaseAuthGuard {
     firebaseApp;
     constructor(firebaseApp) {
         this.firebaseApp = firebaseApp;
@@ -24,27 +24,24 @@ let FirebaseAuthGuard = class FirebaseAuthGuard {
     async canActivate(context) {
         const ctx = graphql_1.GqlExecutionContext.create(context).getContext();
         const authHeader = ctx.req.headers.authorization;
-        if (!authHeader) {
-            throw new common_1.UnauthorizedException('No authorization header provided');
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            throw new common_1.UnauthorizedException('Token de autorización no proporcionado');
         }
-        const token = authHeader.split(' ')[1];
-        if (!token) {
-            throw new common_1.UnauthorizedException('Invalid authorization format');
-        }
+        const token = authHeader.replace('Bearer ', '');
         try {
             const decodedToken = await this.firebaseApp.auth().verifyIdToken(token);
             ctx.user = decodedToken;
             return true;
         }
         catch (error) {
-            throw new common_1.UnauthorizedException('Invalid or expired Firebase token');
+            throw new common_1.UnauthorizedException('Token Firebase inválido o expirado');
         }
     }
 };
-exports.FirebaseAuthGuard = FirebaseAuthGuard;
-exports.FirebaseAuthGuard = FirebaseAuthGuard = __decorate([
+exports.GqlFirebaseAuthGuard = GqlFirebaseAuthGuard;
+exports.GqlFirebaseAuthGuard = GqlFirebaseAuthGuard = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)('FIREBASE_ADMIN')),
     __metadata("design:paramtypes", [Object])
-], FirebaseAuthGuard);
-//# sourceMappingURL=firebase-auth.guard.js.map
+], GqlFirebaseAuthGuard);
+//# sourceMappingURL=gql-firebase-auth.guard.js.map

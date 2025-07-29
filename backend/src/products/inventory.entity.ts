@@ -1,9 +1,4 @@
-import {
-  Entity,
-  Column,
-  ManyToOne,
-  PrimaryColumn,
-} from 'typeorm';
+import { Entity, Column, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Product } from './product.entity';
 
 import { Warehouse } from '../warehouses/warehouse.entity';

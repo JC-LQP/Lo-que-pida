@@ -1,12 +1,13 @@
-import { JwtService } from '@nestjs/jwt';
+import { HttpService } from '@nestjs/axios';
+import { ConfigService } from '@nestjs/config';
+import { LoginResponse } from './dto/login-response';
 import { UsersService } from '../users/users.service';
-import { User } from '../users/user.entity';
+import { User } from '../users/entities/user.entity';
 export declare class AuthService {
+    private readonly httpService;
+    private readonly configService;
     private readonly usersService;
-    private readonly jwtService;
-    constructor(usersService: UsersService, jwtService: JwtService);
-    validateUser(email: string, password: string): Promise<User>;
-    login(user: User): Promise<{
-        accessToken: string;
-    }>;
+    constructor(httpService: HttpService, configService: ConfigService, usersService: UsersService);
+    firebaseLogin(email: string, password: string): Promise<LoginResponse>;
+    validateOrCreateUser(firebaseUser: any): Promise<User>;
 }

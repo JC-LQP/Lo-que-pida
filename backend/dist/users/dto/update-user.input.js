@@ -9,27 +9,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginResponse = void 0;
+exports.UpdateUserInput = void 0;
+const create_user_input_1 = require("./create-user.input");
 const graphql_1 = require("@nestjs/graphql");
-let LoginResponse = class LoginResponse {
-    accessToken;
-    refreshToken;
-    expiresIn;
+let UpdateUserInput = class UpdateUserInput extends (0, graphql_1.PartialType)(create_user_input_1.CreateUserInput) {
+    id;
 };
-exports.LoginResponse = LoginResponse;
+exports.UpdateUserInput = UpdateUserInput;
 __decorate([
-    (0, graphql_1.Field)(),
+    (0, graphql_1.Field)(() => String),
     __metadata("design:type", String)
-], LoginResponse.prototype, "accessToken", void 0);
-__decorate([
-    (0, graphql_1.Field)({ nullable: true }),
-    __metadata("design:type", String)
-], LoginResponse.prototype, "refreshToken", void 0);
-__decorate([
-    (0, graphql_1.Field)({ nullable: true }),
-    __metadata("design:type", Number)
-], LoginResponse.prototype, "expiresIn", void 0);
-exports.LoginResponse = LoginResponse = __decorate([
-    (0, graphql_1.ObjectType)()
-], LoginResponse);
-//# sourceMappingURL=login-response.js.map
+], UpdateUserInput.prototype, "id", void 0);
+exports.UpdateUserInput = UpdateUserInput = __decorate([
+    (0, graphql_1.InputType)()
+], UpdateUserInput);
+//# sourceMappingURL=update-user.input.js.map

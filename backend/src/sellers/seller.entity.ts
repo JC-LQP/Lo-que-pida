@@ -1,12 +1,6 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 
-import { User } from '../users/user.entity';
+import { User } from '../users/entities/user.entity';
 
 /* The `export enum SellerSubscription` is defining an enumeration (enum) in TypeScript for the
 possible subscription levels that a seller entity can have. In this case, the `SellerSubscription`

@@ -10,7 +10,9 @@ exports.FirebaseModule = void 0;
 const common_1 = require("@nestjs/common");
 const admin = require("firebase-admin");
 const path = require("path");
-const serviceAccountPath = path.resolve(__dirname, 'firebase.serviceAccountKey.json');
+const fs = require("fs");
+const serviceAccountPath = path.join(__dirname, '..', '..', 'firebase', 'firebase.serviceAccountKey.json');
+const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
 let FirebaseModule = class FirebaseModule {
 };
 exports.FirebaseModule = FirebaseModule;
@@ -22,7 +24,7 @@ exports.FirebaseModule = FirebaseModule = __decorate([
                 provide: 'FIREBASE_ADMIN',
                 useFactory: () => {
                     return admin.initializeApp({
-                        credential: admin.credential.cert(serviceAccountPath),
+                        credential: admin.credential.cert(serviceAccount),
                     });
                 },
             },

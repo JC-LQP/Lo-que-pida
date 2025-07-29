@@ -1,10 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Customer } from './customer.entity';
 
 /* The Address class defines properties for storing information about a customer's address, including
@@ -15,7 +9,7 @@ export class Address {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Customer, customer => customer.addresses)
+  @ManyToOne(() => Customer, (customer) => customer.addresses)
   @JoinColumn({ name: 'customer_id' })
   customer: Customer;
 

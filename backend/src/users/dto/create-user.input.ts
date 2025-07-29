@@ -1,24 +1,27 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsEmail, IsEnum, IsNotEmpty, MinLength } from 'class-validator';
-import { UserRole } from '../user.entity';
+import { IsEmail, IsEnum, IsOptional } from 'class-validator';
+import { UserRole } from '../entities/user.entity';
 
-/* The `CreateUserInput` class in TypeScript defines input properties for creating a user, including
-email, password, full name (optional), and role. */
 @InputType()
 export class CreateUserInput {
   @IsEmail()
   @Field()
   email: string;
 
-  @MinLength(6)
-  @Field()
-  password: string;
-
   @Field({ nullable: true })
+  @IsOptional()
   fullName?: string;
 
   @IsEnum(UserRole)
-  @Field(() => UserRole)
-  role: UserRole;
-}
+  @Field(() => UserRole, { nullable: true })
+  @IsOptional()
+  role?: UserRole;
 
+  @Field({ nullable: true })
+  @IsOptional()
+  profileImage?: string;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  firebaseUid?: string;
+}

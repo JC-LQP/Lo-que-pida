@@ -1,8 +1,10 @@
 import { AuthService } from './auth.service';
 import { LoginResponse } from './dto/login-response';
-import { LoginInput } from './dto/login.input';
+import { UsersService } from '../users/users.service';
 export declare class AuthResolver {
     private readonly authService;
-    constructor(authService: AuthService);
-    login(input: LoginInput): Promise<LoginResponse>;
+    private readonly usersService;
+    constructor(authService: AuthService, usersService: UsersService);
+    firebaseLogin(email: string, password: string): Promise<LoginResponse>;
+    syncUser(user: any): Promise<boolean>;
 }

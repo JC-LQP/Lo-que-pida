@@ -16,8 +16,8 @@ exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
-const user_entity_1 = require("../users/user.entity");
-const bcrypt = require("bcrypt");
+const user_entity_1 = require("../users/entities/user.entity");
+const user_entity_2 = require("../users/entities/user.entity");
 let UsersService = class UsersService {
     userRepo;
     constructor(userRepo) {
@@ -29,18 +29,51 @@ let UsersService = class UsersService {
     async findByEmail(email) {
         return this.userRepo.findOne({ where: { email } });
     }
+    async findByFirebaseUid(firebaseUid) {
+        return this.userRepo.findOne({ where: { firebaseUid } });
+    }
+    async validateOrCreateUser(firebaseUser) {
+        const { uid, email, name, picture } = firebaseUser;
+        let user = await this.findByFirebaseUid(uid);
+        if (!user) {
+            user = this.userRepo.create({
+                firebaseUid: uid,
+                email: email ?? '',
+                fullName: name ?? undefined,
+                profileImage: picture ?? undefined,
+                isVerified: true,
+                role: user_entity_2.UserRole.CUSTOMER,
+            });
+            await this.userRepo.save(user);
+        }
+        return user;
+    }
     async create(input) {
-        const existing = await this.userRepo.findOne({ where: { email: input.email } });
+        const existing = await this.findByEmail(input.email);
         if (existing) {
             throw new common_1.ConflictException('El correo ya está registrado');
         }
-        const passwordHash = await bcrypt.hash(input.password, 10);
         const user = this.userRepo.create({
             ...input,
-            passwordHash,
-            isVerified: false,
+            isVerified: true,
         });
         return this.userRepo.save(user);
+    }
+    async findOne(id) {
+        const user = await this.userRepo.findOne({ where: { id } });
+        if (!user) {
+            throw new common_1.NotFoundException('Usuario no encontrado');
+        }
+        return user;
+    }
+    async update(id, input) {
+        const user = await this.findOne(id);
+        const updated = Object.assign(user, input);
+        return this.userRepo.save(updated);
+    }
+    async remove(id) {
+        const user = await this.findOne(id);
+        return this.userRepo.softRemove(user);
     }
     async deleteUser(id) {
         const result = await this.userRepo.delete(id);

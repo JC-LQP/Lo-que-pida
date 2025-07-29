@@ -1,7 +1,8 @@
-import { UserRole } from '../user.entity';
+import { UserRole } from '../entities/user.entity';
 export declare class CreateUserInput {
     email: string;
-    password: string;
     fullName?: string;
-    role: UserRole;
+    role?: UserRole;
+    profileImage?: string;
+    firebaseUid?: string;
 }

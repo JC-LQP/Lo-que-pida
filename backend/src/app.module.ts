@@ -18,7 +18,7 @@ import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { FirebaseModule } from './firebase/firebase.module';
 
-console.log('DB_PASSWORD:', process.env.DB_PASSWORD); 
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
 
 @Module({
   imports: [
@@ -39,11 +39,11 @@ console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: true,
-      debug: true,      
+      debug: true,
       sortSchema: true,
-      context: ({ req }) => ({ req }), 
+      context: ({ req }) => ({ req }),
     }),
-    
+
     UsersModule,
     SellersModule,
     CustomersModule,

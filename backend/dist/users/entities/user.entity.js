@@ -25,11 +25,12 @@ var UserRole;
 let User = class User {
     id;
     email;
-    passwordHash;
     fullName;
     role;
     isVerified;
     createdAt;
+    firebaseUid;
+    profileImage;
 };
 exports.User = User;
 __decorate([
@@ -42,10 +43,6 @@ __decorate([
     (0, typeorm_1.Column)({ unique: true, length: 100 }),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ name: 'password_hash', type: 'text' }),
-    __metadata("design:type", String)
-], User.prototype, "passwordHash", void 0);
 __decorate([
     (0, graphql_1.Field)({ nullable: true }),
     (0, typeorm_1.Column)({ name: 'full_name', length: 100, nullable: true }),
@@ -66,6 +63,16 @@ __decorate([
     (0, typeorm_1.CreateDateColumn)({ name: 'created_at' }),
     __metadata("design:type", Date)
 ], User.prototype, "createdAt", void 0);
+__decorate([
+    (0, graphql_1.Field)({ nullable: true }),
+    (0, typeorm_1.Column)({ name: 'firebase_uid', type: 'varchar', nullable: true, unique: true }),
+    __metadata("design:type", String)
+], User.prototype, "firebaseUid", void 0);
+__decorate([
+    (0, graphql_1.Field)({ nullable: true }),
+    (0, typeorm_1.Column)({ name: 'profile_image', type: 'text', nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "profileImage", void 0);
 exports.User = User = __decorate([
     (0, graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)({ name: 'users' })

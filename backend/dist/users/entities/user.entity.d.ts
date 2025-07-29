@@ -6,9 +6,10 @@ export declare enum UserRole {
 export declare class User {
     id: string;
     email: string;
-    passwordHash: string;
     fullName?: string;
     role: UserRole;
     isVerified: boolean;
     createdAt: Date;
+    firebaseUid?: string;
+    profileImage?: string;
 }

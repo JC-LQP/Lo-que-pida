@@ -11,37 +11,59 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const jwt_1 = require("@nestjs/jwt");
-const bcrypt = require("bcrypt");
+const axios_1 = require("@nestjs/axios");
+const config_1 = require("@nestjs/config");
+const rxjs_1 = require("rxjs");
 const users_service_1 = require("../users/users.service");
 let AuthService = class AuthService {
+    httpService;
+    configService;
     usersService;
-    jwtService;
-    constructor(usersService, jwtService) {
+    constructor(httpService, configService, usersService) {
+        this.httpService = httpService;
+        this.configService = configService;
         this.usersService = usersService;
-        this.jwtService = jwtService;
     }
-    async validateUser(email, password) {
-        const user = await this.usersService.findByEmail(email);
-        if (!user)
-            throw new common_1.UnauthorizedException('Usuario no encontrado');
-        const isMatch = await bcrypt.compare(password, user.passwordHash);
-        if (!isMatch)
-            throw new common_1.UnauthorizedException('Contraseña incorrecta');
+    async firebaseLogin(email, password) {
+        const apiKey = this.configService.get('FIREBASE_API_KEY');
+        const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`;
+        try {
+            const response = await (0, rxjs_1.firstValueFrom)(this.httpService.post(url, {
+                email,
+                password,
+                returnSecureToken: true,
+            }));
+            const { idToken, refreshToken, expiresIn } = response.data;
+            return {
+                accessToken: idToken,
+                refreshToken,
+                expiresIn: parseInt(expiresIn),
+            };
+        }
+        catch (error) {
+            throw new common_1.UnauthorizedException('Correo o contraseña inválidos');
+        }
+    }
+    async validateOrCreateUser(firebaseUser) {
+        const firebaseUid = firebaseUser.uid;
+        const email = firebaseUser.email;
+        let user = await this.usersService.findByFirebaseUid(firebaseUid);
+        if (!user) {
+            const createUserInput = {
+                firebaseUid,
+                email,
+                fullName: '',
+            };
+            user = await this.usersService.create(createUserInput);
+        }
         return user;
-    }
-    async login(user) {
-        const payload = { sub: user.id, email: user.email, role: user.role };
-        const token = this.jwtService.sign(payload);
-        return {
-            accessToken: token,
-        };
     }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [users_service_1.UsersService,
-        jwt_1.JwtService])
+    __metadata("design:paramtypes", [axios_1.HttpService,
+        config_1.ConfigService,
+        users_service_1.UsersService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

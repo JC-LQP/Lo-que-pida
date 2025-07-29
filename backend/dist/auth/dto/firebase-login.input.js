@@ -9,27 +9,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginResponse = void 0;
+exports.FirebaseLoginInput = void 0;
 const graphql_1 = require("@nestjs/graphql");
-let LoginResponse = class LoginResponse {
-    accessToken;
-    refreshToken;
-    expiresIn;
+let FirebaseLoginInput = class FirebaseLoginInput {
+    email;
+    password;
 };
-exports.LoginResponse = LoginResponse;
+exports.FirebaseLoginInput = FirebaseLoginInput;
 __decorate([
     (0, graphql_1.Field)(),
     __metadata("design:type", String)
-], LoginResponse.prototype, "accessToken", void 0);
+], FirebaseLoginInput.prototype, "email", void 0);
 __decorate([
-    (0, graphql_1.Field)({ nullable: true }),
+    (0, graphql_1.Field)(),
     __metadata("design:type", String)
-], LoginResponse.prototype, "refreshToken", void 0);
-__decorate([
-    (0, graphql_1.Field)({ nullable: true }),
-    __metadata("design:type", Number)
-], LoginResponse.prototype, "expiresIn", void 0);
-exports.LoginResponse = LoginResponse = __decorate([
-    (0, graphql_1.ObjectType)()
-], LoginResponse);
-//# sourceMappingURL=login-response.js.map
+], FirebaseLoginInput.prototype, "password", void 0);
+exports.FirebaseLoginInput = FirebaseLoginInput = __decorate([
+    (0, graphql_1.InputType)()
+], FirebaseLoginInput);
+//# sourceMappingURL=firebase-login.input.js.map

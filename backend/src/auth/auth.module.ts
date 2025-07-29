@@ -1,24 +1,15 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
+import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
+import { HttpModule } from '@nestjs/axios';
 
-/* The AuthModule class in TypeScript is responsible for handling authentication-related functionality,
-including importing the UsersModule and setting up JWT authentication with a secret and expiration
-time. */
 @Module({
   imports: [
     UsersModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        secret: config.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '7d' },
-      }),
-    }),
+    ConfigModule,
+    HttpModule,
   ],
   providers: [AuthService, AuthResolver],
   exports: [AuthService],

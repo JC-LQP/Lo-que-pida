@@ -8,11 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
-const jwt_1 = require("@nestjs/jwt");
-const auth_service_1 = require("./auth.service");
 const users_module_1 = require("../users/users.module");
 const config_1 = require("@nestjs/config");
+const auth_service_1 = require("./auth.service");
 const auth_resolver_1 = require("./auth.resolver");
+const axios_1 = require("@nestjs/axios");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -20,14 +20,8 @@ exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
             users_module_1.UsersModule,
-            jwt_1.JwtModule.registerAsync({
-                imports: [config_1.ConfigModule],
-                inject: [config_1.ConfigService],
-                useFactory: (config) => ({
-                    secret: config.get('JWT_SECRET'),
-                    signOptions: { expiresIn: '7d' },
-                }),
-            }),
+            config_1.ConfigModule,
+            axios_1.HttpModule,
         ],
         providers: [auth_service_1.AuthService, auth_resolver_1.AuthResolver],
         exports: [auth_service_1.AuthService],

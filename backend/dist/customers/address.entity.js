@@ -30,7 +30,7 @@ __decorate([
     __metadata("design:type", String)
 ], Address.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => customer_entity_1.Customer, customer => customer.addresses),
+    (0, typeorm_1.ManyToOne)(() => customer_entity_1.Customer, (customer) => customer.addresses),
     (0, typeorm_1.JoinColumn)({ name: 'customer_id' }),
     __metadata("design:type", customer_entity_1.Customer)
 ], Address.prototype, "customer", void 0);

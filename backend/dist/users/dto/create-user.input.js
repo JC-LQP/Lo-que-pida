@@ -12,12 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateUserInput = void 0;
 const graphql_1 = require("@nestjs/graphql");
 const class_validator_1 = require("class-validator");
-const user_entity_1 = require("../user.entity");
+const user_entity_1 = require("../entities/user.entity");
 let CreateUserInput = class CreateUserInput {
     email;
-    password;
     fullName;
     role;
+    profileImage;
+    firebaseUid;
 };
 exports.CreateUserInput = CreateUserInput;
 __decorate([
@@ -26,19 +27,26 @@ __decorate([
     __metadata("design:type", String)
 ], CreateUserInput.prototype, "email", void 0);
 __decorate([
-    (0, class_validator_1.MinLength)(6),
-    (0, graphql_1.Field)(),
-    __metadata("design:type", String)
-], CreateUserInput.prototype, "password", void 0);
-__decorate([
     (0, graphql_1.Field)({ nullable: true }),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateUserInput.prototype, "fullName", void 0);
 __decorate([
     (0, class_validator_1.IsEnum)(user_entity_1.UserRole),
-    (0, graphql_1.Field)(() => user_entity_1.UserRole),
+    (0, graphql_1.Field)(() => user_entity_1.UserRole, { nullable: true }),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateUserInput.prototype, "role", void 0);
+__decorate([
+    (0, graphql_1.Field)({ nullable: true }),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateUserInput.prototype, "profileImage", void 0);
+__decorate([
+    (0, graphql_1.Field)({ nullable: true }),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateUserInput.prototype, "firebaseUid", void 0);
 exports.CreateUserInput = CreateUserInput = __decorate([
     (0, graphql_1.InputType)()
 ], CreateUserInput);
