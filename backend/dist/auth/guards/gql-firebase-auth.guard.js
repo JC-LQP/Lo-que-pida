@@ -23,18 +23,18 @@ let GqlFirebaseAuthGuard = class GqlFirebaseAuthGuard {
     }
     async canActivate(context) {
         const ctx = graphql_1.GqlExecutionContext.create(context).getContext();
-        const authHeader = ctx.req.headers.authorization;
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            throw new common_1.UnauthorizedException('Token de autorización no proporcionado');
+        const authHeader = ctx.req.headers?.authorization;
+        if (!authHeader?.startsWith('Bearer ')) {
+            throw new common_1.UnauthorizedException('No se proporcionó un token válido');
         }
-        const token = authHeader.replace('Bearer ', '');
+        const token = authHeader.slice(7).trim();
         try {
             const decodedToken = await this.firebaseApp.auth().verifyIdToken(token);
             ctx.user = decodedToken;
             return true;
         }
         catch (error) {
-            throw new common_1.UnauthorizedException('Token Firebase inválido o expirado');
+            throw new common_1.UnauthorizedException('Token de Firebase inválido o expirado');
         }
     }
 };

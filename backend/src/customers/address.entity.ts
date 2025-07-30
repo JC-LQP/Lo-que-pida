@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { Customer } from './customer.entity';
+import { Customer } from './entities/customer.entity';
 
 /* The Address class defines properties for storing information about a customer's address, including
 recipient name, street address, city, province, country, postal code, phone number, and default

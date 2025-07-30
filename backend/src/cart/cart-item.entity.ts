@@ -1,6 +1,6 @@
 import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Cart } from './cart.entity';
-import { Product } from '../products/product.entity';
+import { Product } from '../products/entities/product.entity';
 
 /* The `CartItem` class represents an entity for items in a shopping cart with properties for cart ID,
 product ID, quantity, and relationships with `Cart` and `Product` entities. */

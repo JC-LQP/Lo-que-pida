@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
-import { Customer } from './customer.entity';
+import { Customer } from './entities/customer.entity';
 
 export enum SubscriptionStatus {
   ACTIVE = 'active',

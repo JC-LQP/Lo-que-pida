@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Customer } from './customer.entity';
+import { Customer } from './entities/customer.entity';
 import { Subscription } from './subscription.entity';
 import { CustomersResolver } from './customers.resolver';
 

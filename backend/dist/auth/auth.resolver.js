@@ -14,21 +14,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthResolver = void 0;
 const graphql_1 = require("@nestjs/graphql");
-const auth_service_1 = require("./auth.service");
-const login_response_1 = require("./dto/login-response");
 const common_1 = require("@nestjs/common");
 const gql_firebase_auth_guard_1 = require("../auth/guards/gql-firebase-auth.guard");
 const current_user_decorator_1 = require("../auth/decorators/current-user.decorator");
 const users_service_1 = require("../users/users.service");
 let AuthResolver = class AuthResolver {
-    authService;
     usersService;
-    constructor(authService, usersService) {
-        this.authService = authService;
+    constructor(usersService) {
         this.usersService = usersService;
-    }
-    async firebaseLogin(email, password) {
-        return this.authService.firebaseLogin(email, password);
     }
     async syncUser(user) {
         await this.usersService.validateOrCreateUser(user);
@@ -36,14 +29,6 @@ let AuthResolver = class AuthResolver {
     }
 };
 exports.AuthResolver = AuthResolver;
-__decorate([
-    (0, graphql_1.Mutation)(() => login_response_1.LoginResponse),
-    __param(0, (0, graphql_1.Args)('email')),
-    __param(1, (0, graphql_1.Args)('password')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
-    __metadata("design:returntype", Promise)
-], AuthResolver.prototype, "firebaseLogin", null);
 __decorate([
     (0, common_1.UseGuards)(gql_firebase_auth_guard_1.GqlFirebaseAuthGuard),
     (0, graphql_1.Mutation)(() => Boolean),
@@ -54,7 +39,6 @@ __decorate([
 ], AuthResolver.prototype, "syncUser", null);
 exports.AuthResolver = AuthResolver = __decorate([
     (0, graphql_1.Resolver)(),
-    __metadata("design:paramtypes", [auth_service_1.AuthService,
-        users_service_1.UsersService])
+    __metadata("design:paramtypes", [users_service_1.UsersService])
 ], AuthResolver);
 //# sourceMappingURL=auth.resolver.js.map

@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Payment } from './payment.entity';
+import { Payment } from './entities/payment.entity';
+import { PaymentsService } from './payments.service';
+import { PaymentsResolver } from './payments.resolver';
+import { Order } from '../orders/entities/order.entity';
 
-/* The `PaymentsModule` class is a module in TypeScript that imports and exports the `TypeOrmModule`
-for managing Payment entities. */
 @Module({
-  imports: [TypeOrmModule.forFeature([Payment])],
-  exports: [TypeOrmModule],
+  imports: [TypeOrmModule.forFeature([Payment, Order])],
+  providers: [PaymentsService, PaymentsResolver],
 })
 export class PaymentsModule {}

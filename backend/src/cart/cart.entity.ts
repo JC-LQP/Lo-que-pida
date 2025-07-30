@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, CreateDateColumn, OneToOne, JoinColumn } from 'typeorm';
-import { Customer } from '../customers/customer.entity';
+import { Customer } from '../customers/entities/customer.entity';
 
 /* The `Cart` class represents a cart entity with an id, customer association, and creation date. */
 @Entity({ name: 'carts' })

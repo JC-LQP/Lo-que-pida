@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Seller } from './seller.entity';
+import { Seller } from './entities/seller.entity';
 
 /* The SellersModule class is a module in TypeScript that imports the Seller entity using TypeORM. */
 @Module({

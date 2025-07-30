@@ -6,8 +6,8 @@ import {
   CreateDateColumn,
   JoinColumn,
 } from 'typeorm';
-import { Customer } from '../customers/customer.entity';
-import { Product } from '../products/product.entity';
+import { Customer } from '../customers/entities/customer.entity';
+import { Product } from '../products/entities/product.entity';
 
 /* The Review class defines a database entity for storing reviews with properties such as id, customer,
 product, rating, comment, and createdAt. */
