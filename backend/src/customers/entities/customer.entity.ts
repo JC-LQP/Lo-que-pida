@@ -2,41 +2,34 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
+  CreateDateColumn,
+  OneToMany,
   OneToOne,
   JoinColumn,
-  OneToMany,
-  CreateDateColumn,
 } from 'typeorm';
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-
-import { User } from '../../users/entities/user.entity';
 import { Address } from '../../addresses/entities/address.entity';
+import { User } from '../../users/entities/user.entity';
+import { Order } from '../../orders/entities/order.entity';
 
-@ObjectType()
+/**
+ * La entidad Customer representa a un cliente registrado en el marketplace.
+ * Se relaciona con un User, múltiples direcciones y órdenes.
+ */
 @Entity({ name: 'customers' })
 export class Customer {
-  @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Field(() => User)
-  @OneToOne(() => User)
+  @OneToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Field()
-  @Column({ length: 50 })
-  country: string;
-
-  @Field()
-  @Column({ name: 'postal_code', length: 20 })
-  postalCode: string;
-
-  @Field(() => [Address], { nullable: true })
-  @OneToMany(() => Address, (address) => address.customer, { cascade: true })
-  addresses?: Address[];
-
-  @Field()
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
+
+  @OneToMany(() => Address, (address) => address.customer)
+  addresses: Address[];
+
+  @OneToMany(() => Order, (order) => order.customer)
+  orders: Order[];
 }

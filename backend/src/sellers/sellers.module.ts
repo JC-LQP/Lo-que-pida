@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SellersService } from './sellers.service';
+import { SellersResolver } from './sellers.resolver';
 import { Seller } from './entities/seller.entity';
 
-/* The SellersModule class is a module in TypeScript that imports the Seller entity using TypeORM. */
 @Module({
   imports: [TypeOrmModule.forFeature([Seller])],
-  exports: [TypeOrmModule],
+  providers: [SellersResolver, SellersService],
 })
 export class SellersModule {}

@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
+import { CustomersService } from './customers.service';
+import { CustomersResolver } from './customers.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Customer } from './entities/customer.entity';
-import { Subscription } from './subscription.entity';
-import { CustomersResolver } from './customers.resolver';
+import { User } from '../users/entities/user.entity';
 
-/* The CustomersModule class is a module in TypeScript that provides functionality related to customers
-and subscriptions using TypeORM. */
 @Module({
-  imports: [TypeOrmModule.forFeature([Customer, Subscription])],
-  exports: [TypeOrmModule],
-  providers: [CustomersResolver],
+  imports: [TypeOrmModule.forFeature([Customer, User])],
+  providers: [CustomersResolver, CustomersService],
 })
 export class CustomersModule {}

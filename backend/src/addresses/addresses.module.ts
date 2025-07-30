@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AddressesService } from './addresses.service';
+import { AddressesResolver } from './addresses.resolver';
 import { Address } from './entities/address.entity';
+import { Customer } from '../customers/entities/customer.entity';
 
-/* The `AddressesModule` class is a module in TypeScript that imports the `Address` entity using
-TypeORM and exports the TypeOrmModule. */
 @Module({
-  imports: [TypeOrmModule.forFeature([Address])],
-  controllers: [],
-  providers: [],
-  exports: [TypeOrmModule],
+  imports: [TypeOrmModule.forFeature([Address, Customer])],
+  providers: [AddressesResolver, AddressesService],
 })
 export class AddressesModule {}

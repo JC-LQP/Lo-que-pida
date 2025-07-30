@@ -2,70 +2,57 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
-  JoinColumn,
   CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
 } from 'typeorm';
-import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
 import { User } from '../../users/entities/user.entity';
+import { Subscription } from '../../subscriptions/entities/subscription.entity';
+import { Product } from '../../products/entities/product.entity';
 
-export enum SellerSubscription {
-  LOCAL = 'local',
-  REGIONAL = 'regional',
-  NATIONAL = 'national',
-  INTERNATIONAL = 'international',
-}
-
+/**
+ * Enum representing the status of a seller.
+ */
 export enum SellerStatus {
-  PENDING = 'pending',
-  APPROVED = 'approved',
-  REJECTED = 'rejected',
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  BANNED = 'banned',
 }
 
-// GraphQL Enum registration
-registerEnumType(SellerSubscription, {
-  name: 'SellerSubscription',
-  description: 'Subscription level of the seller',
-});
-
-registerEnumType(SellerStatus, {
-  name: 'SellerStatus',
-  description: 'Status of the seller account',
-});
-
-@ObjectType()
 @Entity({ name: 'sellers' })
 export class Seller {
-  @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Field(() => User)
-  @OneToOne(() => User)
+  @ManyToOne(() => User, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Field()
-  @Column({ name: 'store_name', unique: true, length: 100 })
+  @Column({ name: 'store_name' })
   storeName: string;
 
-  @Field({ nullable: true })
-  @Column({ name: 'tax_id', length: 50, nullable: true })
-  taxId?: string;
+  @Column({ name: 'store_description', nullable: true, type: 'text' })
+  storeDescription?: string;
 
-  @Field({ nullable: true })
-  @Column({ name: 'phone_number', length: 20, nullable: true })
-  phoneNumber?: string;
+  @Column({ name: 'store_logo', nullable: true })
+  storeLogo?: string;
 
-  @Field(() => SellerSubscription, { nullable: true })
-  @Column({ type: 'enum', enum: SellerSubscription, nullable: true })
-  subscription?: SellerSubscription;
+  @ManyToOne(() => Subscription, { nullable: true })
+  @JoinColumn({ name: 'subscription_id' })
+  subscription?: Subscription;
 
-  @Field(() => SellerStatus)
-  @Column({ type: 'enum', enum: SellerStatus, default: SellerStatus.PENDING })
+  @Column({
+    type: 'enum',
+    enum: SellerStatus,
+    default: SellerStatus.ACTIVE,
+  })
   status: SellerStatus;
 
-  @Field()
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
+
+  @OneToMany(() => Product, (product) => product.seller)
+  products: Product[];
 }

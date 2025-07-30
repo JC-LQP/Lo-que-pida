@@ -1,36 +1,58 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { ObjectType, Field, ID, Float } from '@nestjs/graphql';
 import { Seller } from '../../sellers/entities/seller.entity';
+import { ProductReview } from '../../product_reviews/entities/product-review.entity';
+import { Inventory } from '../../inventory/entities/inventory.entity';
+import { ProductCondition } from '../../common/enums/product-condition.enum';
 
-export enum ProductCondition {
-  NEW = 'new',
-  USED = 'used',
-}
-
-/* The class `Product` represents a product entity with various properties such as id, seller, name,
-description, condition, category, approval status, and creation date. */
+@ObjectType()
 @Entity({ name: 'products' })
 export class Product {
+  @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Seller)
-  seller: Seller;
-
-  @Column({ length: 100 })
+  @Field()
+  @Column()
   name: string;
 
-  @Column({ type: 'text' })
-  description: string;
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  description?: string;
 
-  @Column({ type: 'enum', enum: ProductCondition, default: ProductCondition.NEW })
+  @Field(() => Float)
+  @Column('decimal', { precision: 10, scale: 2 })
+  price: number;
+
+  @Field(() => ProductCondition)
+  @Column({ type: 'enum', enum: ProductCondition })
   condition: ProductCondition;
 
-  @Column({ length: 100 })
-  category: string;
+  @Field(() => Seller)
+  @ManyToOne(() => Seller, (seller) => seller.products)
+  seller: Seller;
 
-  @Column({ default: false })
-  approved: boolean;
+  @Field(() => [ProductReview], { nullable: true })
+  @OneToMany(() => ProductReview, (review) => review.product)
+  reviews?: ProductReview[];
 
+  @Field(() => [Inventory], { nullable: true })
+  @OneToMany(() => Inventory, (inventory) => inventory.product)
+  inventory?: Inventory[];
+
+  @Field()
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
+
+  @Field()
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 }

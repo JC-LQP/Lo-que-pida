@@ -1,20 +1,35 @@
-import { Resolver, Query } from '@nestjs/graphql';
-import { Customer } from './models/customer.model';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { CustomersService } from './customers.service';
+import { Customer } from './entities/customer.entity';
+import { CreateCustomerInput } from './dto/create-customer.input';
+import { UpdateCustomerInput } from './dto/update-customer.input';
 
-/* The `CustomersResolver` class in TypeScript defines a resolver for fetching customer data with a
-`getCustomers` method that returns a static array of customer objects. */
 @Resolver(() => Customer)
 export class CustomersResolver {
-  @Query(() => [Customer])
-  getCustomers(): Customer[] {
-    // por ahora devolvemos un arreglo estático de prueba
-    return [
-      {
-        id: '1',
-        fullName: 'Juan Pérez',
-        email: 'juan@example.com',
-        phoneNumber: '0991234567',
-      },
-    ];
+  constructor(private readonly customersService: CustomersService) {}
+
+  @Mutation(() => Customer)
+  createCustomer(@Args('input') input: CreateCustomerInput): Promise<Customer> {
+    return this.customersService.create(input);
+  }
+
+  @Query(() => [Customer], { name: 'customers' })
+  findAll(): Promise<Customer[]> {
+    return this.customersService.findAll();
+  }
+
+  @Query(() => Customer, { name: 'customer' })
+  findOne(@Args('id', { type: () => String }) id: string): Promise<Customer> {
+    return this.customersService.findOne(id);
+  }
+
+  @Mutation(() => Customer)
+  updateCustomer(@Args('input') input: UpdateCustomerInput): Promise<Customer> {
+    return this.customersService.update(input);
+  }
+
+  @Mutation(() => Customer)
+  removeCustomer(@Args('id', { type: () => String }) id: string): Promise<Customer> {
+    return this.customersService.remove(id);
   }
 }
