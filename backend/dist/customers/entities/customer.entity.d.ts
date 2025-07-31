@@ -7,4 +7,7 @@ export declare class Customer {
     createdAt: Date;
     addresses: Address[];
     orders: Order[];
+    email: string;
+    fullName: string;
+    phoneNumber?: string;
 }

@@ -46,9 +46,9 @@ export class Product {
   @OneToMany(() => ProductReview, (review) => review.product)
   reviews?: ProductReview[];
 
-  @Field(() => Inventory)
+  @Field(() => Inventory, { nullable: true })
   @ManyToOne(() => Inventory, (inventory) => inventory.product)
-  inventory: Inventory;
+  inventory?: Inventory;
 
   @Field(() => [OrderItem], { nullable: true })
   @OneToMany(() => OrderItem, (item) => item.product)

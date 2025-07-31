@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql';
 import { CustomersService } from './customers.service';
 import { Customer } from './entities/customer.entity';
 import { CreateCustomerInput } from './dto/create-customer.input';
@@ -31,5 +31,22 @@ export class CustomersResolver {
   @Mutation(() => Customer)
   removeCustomer(@Args('id', { type: () => String }) id: string): Promise<Customer> {
     return this.customersService.remove(id);
+  }
+
+  @ResolveField(() => String)
+  email(@Parent() customer: Customer): string {
+    return customer.user?.email || '';
+  }
+
+  @ResolveField(() => String)
+  fullName(@Parent() customer: Customer): string {
+    return customer.user?.fullName || '';
+  }
+
+  @ResolveField(() => String, { nullable: true })
+  phoneNumber(@Parent() customer: Customer): string | null {
+    // Assuming phoneNumber might be a field on User or Customer
+    // For now returning null, can be updated when the field is added
+    return null;
   }
 }

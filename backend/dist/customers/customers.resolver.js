@@ -38,6 +38,15 @@ let CustomersResolver = class CustomersResolver {
     removeCustomer(id) {
         return this.customersService.remove(id);
     }
+    email(customer) {
+        return customer.user?.email || '';
+    }
+    fullName(customer) {
+        return customer.user?.fullName || '';
+    }
+    phoneNumber(customer) {
+        return null;
+    }
 };
 exports.CustomersResolver = CustomersResolver;
 __decorate([
@@ -74,6 +83,27 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], CustomersResolver.prototype, "removeCustomer", null);
+__decorate([
+    (0, graphql_1.ResolveField)(() => String),
+    __param(0, (0, graphql_1.Parent)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [customer_entity_1.Customer]),
+    __metadata("design:returntype", String)
+], CustomersResolver.prototype, "email", null);
+__decorate([
+    (0, graphql_1.ResolveField)(() => String),
+    __param(0, (0, graphql_1.Parent)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [customer_entity_1.Customer]),
+    __metadata("design:returntype", String)
+], CustomersResolver.prototype, "fullName", null);
+__decorate([
+    (0, graphql_1.ResolveField)(() => String, { nullable: true }),
+    __param(0, (0, graphql_1.Parent)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [customer_entity_1.Customer]),
+    __metadata("design:returntype", Object)
+], CustomersResolver.prototype, "phoneNumber", null);
 exports.CustomersResolver = CustomersResolver = __decorate([
     (0, graphql_1.Resolver)(() => customer_entity_1.Customer),
     __metadata("design:paramtypes", [customers_service_1.CustomersService])

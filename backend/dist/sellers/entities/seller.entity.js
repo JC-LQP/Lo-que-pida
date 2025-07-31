@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Seller = exports.SellerStatus = void 0;
 const typeorm_1 = require("typeorm");
+const graphql_1 = require("@nestjs/graphql");
 const user_entity_1 = require("../../users/entities/user.entity");
 const subscription_entity_1 = require("../../subscriptions/entities/subscription.entity");
 const product_entity_1 = require("../../products/entities/product.entity");
@@ -21,6 +22,9 @@ var SellerStatus;
     SellerStatus["INACTIVE"] = "inactive";
     SellerStatus["BANNED"] = "banned";
 })(SellerStatus || (exports.SellerStatus = SellerStatus = {}));
+(0, graphql_1.registerEnumType)(SellerStatus, {
+    name: 'SellerStatus',
+});
 let Seller = class Seller {
     id;
     user;
@@ -35,32 +39,39 @@ let Seller = class Seller {
 };
 exports.Seller = Seller;
 __decorate([
+    (0, graphql_1.Field)(() => graphql_1.ID),
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
 ], Seller.prototype, "id", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => user_entity_1.User),
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, { nullable: false, onDelete: 'CASCADE' }),
     (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
     __metadata("design:type", user_entity_1.User)
 ], Seller.prototype, "user", void 0);
 __decorate([
+    (0, graphql_1.Field)(),
     (0, typeorm_1.Column)({ name: 'store_name' }),
     __metadata("design:type", String)
 ], Seller.prototype, "storeName", void 0);
 __decorate([
+    (0, graphql_1.Field)({ nullable: true }),
     (0, typeorm_1.Column)({ name: 'store_description', nullable: true, type: 'text' }),
     __metadata("design:type", String)
 ], Seller.prototype, "storeDescription", void 0);
 __decorate([
+    (0, graphql_1.Field)({ nullable: true }),
     (0, typeorm_1.Column)({ name: 'store_logo', nullable: true }),
     __metadata("design:type", String)
 ], Seller.prototype, "storeLogo", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => subscription_entity_1.Subscription, { nullable: true }),
     (0, typeorm_1.ManyToOne)(() => subscription_entity_1.Subscription, { nullable: true }),
     (0, typeorm_1.JoinColumn)({ name: 'subscription_id' }),
     __metadata("design:type", subscription_entity_1.Subscription)
 ], Seller.prototype, "subscription", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => SellerStatus),
     (0, typeorm_1.Column)({
         type: 'enum',
         enum: SellerStatus,
@@ -69,18 +80,22 @@ __decorate([
     __metadata("design:type", String)
 ], Seller.prototype, "status", void 0);
 __decorate([
+    (0, graphql_1.Field)(),
     (0, typeorm_1.CreateDateColumn)({ name: 'created_at' }),
     __metadata("design:type", Date)
 ], Seller.prototype, "createdAt", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => [product_entity_1.Product]),
     (0, typeorm_1.OneToMany)(() => product_entity_1.Product, (product) => product.seller),
     __metadata("design:type", Array)
 ], Seller.prototype, "products", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => [warehouse_entity_1.Warehouse]),
     (0, typeorm_1.OneToMany)(() => warehouse_entity_1.Warehouse, (warehouse) => warehouse.seller),
     __metadata("design:type", Array)
 ], Seller.prototype, "warehouses", void 0);
 exports.Seller = Seller = __decorate([
+    (0, graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)({ name: 'sellers' })
 ], Seller);
 //# sourceMappingURL=seller.entity.js.map

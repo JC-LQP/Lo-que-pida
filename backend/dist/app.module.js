@@ -26,6 +26,8 @@ const product_reviews_module_1 = require("./product_reviews/product-reviews.modu
 const addresses_module_1 = require("./addresses/addresses.module");
 const auth_module_1 = require("./auth/auth.module");
 const firebase_module_1 = require("./firebase/firebase.module");
+const inventory_module_1 = require("./inventory/inventory.module");
+const categories_module_1 = require("./categories/categories.module");
 console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
 let AppModule = class AppModule {
 };
@@ -45,6 +47,7 @@ exports.AppModule = AppModule = __decorate([
                 schema: process.env.DB_SCHEMA,
                 autoLoadEntities: true,
                 synchronize: true,
+                logging: ['error', 'warn'],
             }),
             graphql_1.GraphQLModule.forRoot({
                 driver: apollo_1.ApolloDriver,
@@ -66,6 +69,8 @@ exports.AppModule = AppModule = __decorate([
             product_reviews_module_1.ProductReviewsModule,
             addresses_module_1.AddressesModule,
             auth_module_1.AuthModule,
+            inventory_module_1.InventoryModule,
+            categories_module_1.CategoriesModule,
         ],
     })
 ], AppModule);

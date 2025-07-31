@@ -10,6 +10,7 @@ exports.InventoryModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const inventory_entity_1 = require("./entities/inventory.entity");
+const category_entity_1 = require("../categories/entities/category.entity");
 const inventory_service_1 = require("./inventory.service");
 const inventory_resolver_1 = require("./inventory.resolver");
 let InventoryModule = class InventoryModule {
@@ -17,7 +18,7 @@ let InventoryModule = class InventoryModule {
 exports.InventoryModule = InventoryModule;
 exports.InventoryModule = InventoryModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([inventory_entity_1.Inventory])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([inventory_entity_1.Inventory, category_entity_1.Category])],
         providers: [inventory_service_1.InventoryService, inventory_resolver_1.InventoryResolver],
     })
 ], InventoryModule);

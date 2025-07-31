@@ -21,6 +21,7 @@ const update_user_input_1 = require("./dto/update-user.input");
 const common_1 = require("@nestjs/common");
 const gql_firebase_auth_guard_1 = require("../auth/guards/gql-firebase-auth.guard");
 const current_user_decorator_1 = require("../auth/decorators/current-user.decorator");
+const seller_entity_1 = require("../sellers/entities/seller.entity");
 let UsersResolver = class UsersResolver {
     usersService;
     constructor(usersService) {
@@ -36,11 +37,24 @@ let UsersResolver = class UsersResolver {
     findOne(id) {
         return this.usersService.findOne(id);
     }
+    async me(user) {
+        const dbUser = await this.usersService.findByFirebaseUid(user.uid);
+        if (!dbUser) {
+            return this.usersService.validateOrCreateUser(user);
+        }
+        return dbUser;
+    }
     updateUser(updateUserInput) {
         return this.usersService.update(updateUserInput.id, updateUserInput);
     }
     removeUser(id) {
         return this.usersService.remove(id);
+    }
+    async seller(user) {
+        if (user.role !== user_entity_1.UserRole.SELLER) {
+            return null;
+        }
+        return this.usersService.findSellerByUserId(user.id);
     }
 };
 exports.UsersResolver = UsersResolver;
@@ -67,6 +81,14 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UsersResolver.prototype, "findOne", null);
 __decorate([
+    (0, graphql_1.Query)(() => user_entity_1.User, { name: 'me' }),
+    (0, common_1.UseGuards)(gql_firebase_auth_guard_1.GqlFirebaseAuthGuard),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UsersResolver.prototype, "me", null);
+__decorate([
     (0, graphql_1.Mutation)(() => user_entity_1.User),
     __param(0, (0, graphql_1.Args)('updateUserInput')),
     __metadata("design:type", Function),
@@ -80,6 +102,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], UsersResolver.prototype, "removeUser", null);
+__decorate([
+    (0, graphql_1.ResolveField)(() => seller_entity_1.Seller, { nullable: true }),
+    __param(0, (0, graphql_1.Parent)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_entity_1.User]),
+    __metadata("design:returntype", Promise)
+], UsersResolver.prototype, "seller", null);
 exports.UsersResolver = UsersResolver = __decorate([
     (0, graphql_1.Resolver)(() => user_entity_1.User),
     __metadata("design:paramtypes", [users_service_1.UsersService])

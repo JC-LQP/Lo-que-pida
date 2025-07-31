@@ -17,13 +17,20 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const seller_entity_1 = require("./entities/seller.entity");
+const user_entity_1 = require("../users/entities/user.entity");
 let SellersService = class SellersService {
     sellerRepository;
-    constructor(sellerRepository) {
+    userRepository;
+    constructor(sellerRepository, userRepository) {
         this.sellerRepository = sellerRepository;
+        this.userRepository = userRepository;
     }
     async create(input) {
-        const seller = this.sellerRepository.create(input);
+        const user = await this.userRepository.findOne({ where: { id: input.userId } });
+        if (!user) {
+            throw new common_1.NotFoundException(`User with id ${input.userId} not found`);
+        }
+        const seller = this.sellerRepository.create({ ...input, user });
         return this.sellerRepository.save(seller);
     }
     async findAll() {
@@ -53,6 +60,8 @@ exports.SellersService = SellersService;
 exports.SellersService = SellersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(seller_entity_1.Seller)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], SellersService);
 //# sourceMappingURL=sellers.service.js.map

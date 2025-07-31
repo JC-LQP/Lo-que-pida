@@ -18,6 +18,8 @@ import { ProductReviewsModule } from './product_reviews/product-reviews.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { AuthModule } from './auth/auth.module';
 import { FirebaseModule } from './firebase/firebase.module';
+import { InventoryModule } from './inventory/inventory.module';
+import { CategoriesModule } from './categories/categories.module';
 
 console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
 
@@ -35,6 +37,7 @@ console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
       schema: process.env.DB_SCHEMA,
       autoLoadEntities: true,
       synchronize: true,
+      logging: ['error', 'warn'], // Enable logging to see what's happening
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -57,6 +60,8 @@ console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
     ProductReviewsModule,
     AddressesModule,
     AuthModule,
+    InventoryModule,
+    CategoriesModule,
   ],
 })
 export class AppModule {}

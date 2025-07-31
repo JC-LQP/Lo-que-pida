@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Customer = void 0;
 const typeorm_1 = require("typeorm");
+const graphql_1 = require("@nestjs/graphql");
 const address_entity_1 = require("../../addresses/entities/address.entity");
 const user_entity_1 = require("../../users/entities/user.entity");
 const order_entity_1 = require("../../orders/entities/order.entity");
@@ -20,9 +21,13 @@ let Customer = class Customer {
     createdAt;
     addresses;
     orders;
+    email;
+    fullName;
+    phoneNumber;
 };
 exports.Customer = Customer;
 __decorate([
+    (0, graphql_1.Field)(() => graphql_1.ID),
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
 ], Customer.prototype, "id", void 0);
@@ -43,7 +48,20 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => order_entity_1.Order, (order) => order.customer),
     __metadata("design:type", Array)
 ], Customer.prototype, "orders", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String),
+    __metadata("design:type", String)
+], Customer.prototype, "email", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String),
+    __metadata("design:type", String)
+], Customer.prototype, "fullName", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String, { nullable: true }),
+    __metadata("design:type", String)
+], Customer.prototype, "phoneNumber", void 0);
 exports.Customer = Customer = __decorate([
+    (0, graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)({ name: 'customers' })
 ], Customer);
 //# sourceMappingURL=customer.entity.js.map

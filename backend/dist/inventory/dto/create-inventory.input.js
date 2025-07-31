@@ -14,6 +14,7 @@ const graphql_1 = require("@nestjs/graphql");
 const class_validator_1 = require("class-validator");
 let CreateInventoryInput = class CreateInventoryInput {
     productId;
+    categoryId;
     stock;
     reservedStock;
     soldStock;
@@ -24,6 +25,11 @@ __decorate([
     (0, class_validator_1.IsUUID)(),
     __metadata("design:type", String)
 ], CreateInventoryInput.prototype, "productId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => String),
+    (0, class_validator_1.IsUUID)(),
+    __metadata("design:type", String)
+], CreateInventoryInput.prototype, "categoryId", void 0);
 __decorate([
     (0, graphql_1.Field)(() => graphql_1.Int),
     (0, class_validator_1.IsInt)(),

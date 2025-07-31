@@ -36,12 +36,14 @@ let ProductsService = class ProductsService {
         return this.productRepository.save(product);
     }
     findAll() {
-        return this.productRepository.find({ relations: ['seller'] });
+        return this.productRepository.find({
+            relations: ['seller', 'seller.user', 'inventory', 'inventory.category'],
+        });
     }
     async findOne(id) {
         const product = await this.productRepository.findOne({
             where: { id },
-            relations: ['seller'],
+            relations: ['seller', 'seller.user', 'inventory', 'inventory.category'],
         });
         if (!product)
             throw new common_1.NotFoundException('Product not found');

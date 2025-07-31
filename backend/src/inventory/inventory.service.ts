@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Inventory } from './entities/inventory.entity';
+import { Category } from '../categories/entities/category.entity';
 import { Repository } from 'typeorm';
 import { CreateInventoryInput } from './dto/create-inventory.input';
 import { UpdateInventoryInput } from './dto/update-inventory.input';
@@ -10,10 +11,23 @@ export class InventoryService {
   constructor(
     @InjectRepository(Inventory)
     private readonly inventoryRepository: Repository<Inventory>,
+    @InjectRepository(Category)
+    private readonly categoryRepository: Repository<Category>,
   ) {}
 
   async create(input: CreateInventoryInput): Promise<Inventory> {
-    const inventory = this.inventoryRepository.create(input);
+    // Find the category
+    const category = await this.categoryRepository.findOneBy({ id: input.categoryId });
+    if (!category) {
+      throw new NotFoundException(`Category with ID ${input.categoryId} not found`);
+    }
+
+    // Create inventory with proper category relationship
+    const inventory = this.inventoryRepository.create({
+      ...input,
+      category,
+    });
+    
     return this.inventoryRepository.save(inventory);
   }
 

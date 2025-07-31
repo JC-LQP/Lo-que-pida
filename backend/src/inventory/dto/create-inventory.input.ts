@@ -7,6 +7,10 @@ export class CreateInventoryInput {
   @IsUUID()
   productId: string;
 
+  @Field(() => String)
+  @IsUUID()
+  categoryId: string;
+
   @Field(() => Int)
   @IsInt()
   @Min(0)

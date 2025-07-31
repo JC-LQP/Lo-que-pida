@@ -18,10 +18,13 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("../users/entities/user.entity");
 const user_entity_2 = require("../users/entities/user.entity");
+const seller_entity_1 = require("../sellers/entities/seller.entity");
 let UsersService = class UsersService {
     userRepo;
-    constructor(userRepo) {
+    sellerRepo;
+    constructor(userRepo, sellerRepo) {
         this.userRepo = userRepo;
+        this.sellerRepo = sellerRepo;
     }
     findAll() {
         return this.userRepo.find();
@@ -79,11 +82,19 @@ let UsersService = class UsersService {
         const result = await this.userRepo.delete(id);
         return (result.affected ?? 0) > 0;
     }
+    async findSellerByUserId(userId) {
+        return this.sellerRepo.findOne({
+            where: { user: { id: userId } },
+            relations: ['user']
+        });
+    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(seller_entity_1.Seller)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], UsersService);
 //# sourceMappingURL=users.service.js.map

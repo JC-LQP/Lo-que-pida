@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { UserRole } from '../users/entities/user.entity';
+import { Seller } from '../sellers/entities/seller.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import * as admin from 'firebase-admin';
@@ -16,6 +17,8 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
+    @InjectRepository(Seller)
+    private readonly sellerRepo: Repository<Seller>,
   ) {}
 
   /**
@@ -117,5 +120,15 @@ export class UsersService {
   async deleteUser(id: string): Promise<boolean> {
     const result = await this.userRepo.delete(id);
     return (result.affected ?? 0) > 0;
+  }
+
+  /**
+   * Find seller profile by user ID.
+   */
+  async findSellerByUserId(userId: string): Promise<Seller | null> {
+    return this.sellerRepo.findOne({ 
+      where: { user: { id: userId } },
+      relations: ['user']
+    });
   }
 }

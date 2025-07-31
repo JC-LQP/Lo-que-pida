@@ -22,6 +22,9 @@ var OrderStatus;
     OrderStatus["DELIVERED"] = "delivered";
     OrderStatus["CANCELLED"] = "cancelled";
 })(OrderStatus || (exports.OrderStatus = OrderStatus = {}));
+(0, graphql_1.registerEnumType)(OrderStatus, {
+    name: 'OrderStatus',
+});
 let Order = class Order {
     id;
     customer;
@@ -33,10 +36,12 @@ let Order = class Order {
 };
 exports.Order = Order;
 __decorate([
+    (0, graphql_1.Field)(() => graphql_1.ID),
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
 ], Order.prototype, "id", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => customer_entity_1.Customer),
     (0, typeorm_1.ManyToOne)(() => customer_entity_1.Customer, { eager: true }),
     (0, typeorm_1.JoinColumn)({ name: 'customer_id' }),
     __metadata("design:type", customer_entity_1.Customer)
@@ -47,22 +52,27 @@ __decorate([
     __metadata("design:type", Array)
 ], Order.prototype, "items", void 0);
 __decorate([
+    (0, graphql_1.Field)(() => OrderStatus),
     (0, typeorm_1.Column)({ type: 'enum', enum: OrderStatus, default: OrderStatus.PENDING }),
     __metadata("design:type", String)
 ], Order.prototype, "status", void 0);
 __decorate([
+    (0, graphql_1.Field)(),
     (0, typeorm_1.Column)('decimal', { precision: 10, scale: 2 }),
     __metadata("design:type", Number)
 ], Order.prototype, "total", void 0);
 __decorate([
+    (0, graphql_1.Field)(),
     (0, typeorm_1.CreateDateColumn)({ name: 'created_at' }),
     __metadata("design:type", Date)
 ], Order.prototype, "createdAt", void 0);
 __decorate([
+    (0, graphql_1.Field)(),
     (0, typeorm_1.UpdateDateColumn)({ name: 'updated_at' }),
     __metadata("design:type", Date)
 ], Order.prototype, "updatedAt", void 0);
 exports.Order = Order = __decorate([
+    (0, graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)({ name: 'orders' })
 ], Order);
 //# sourceMappingURL=order.entity.js.map

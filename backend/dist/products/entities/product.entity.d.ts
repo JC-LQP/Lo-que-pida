@@ -11,7 +11,7 @@ export declare class Product {
     condition: ProductCondition;
     seller: Seller;
     reviews?: ProductReview[];
-    inventory: Inventory;
+    inventory?: Inventory;
     orderItems?: OrderItem[];
     createdAt: Date;
     updatedAt: Date;

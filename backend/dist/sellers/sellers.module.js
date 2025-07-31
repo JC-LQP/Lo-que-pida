@@ -12,12 +12,16 @@ const typeorm_1 = require("@nestjs/typeorm");
 const sellers_service_1 = require("./sellers.service");
 const sellers_resolver_1 = require("./sellers.resolver");
 const seller_entity_1 = require("./entities/seller.entity");
+const user_entity_1 = require("../users/entities/user.entity");
+const subscription_entity_1 = require("../subscriptions/entities/subscription.entity");
+const product_entity_1 = require("../products/entities/product.entity");
+const warehouse_entity_1 = require("../warehouses/entities/warehouse.entity");
 let SellersModule = class SellersModule {
 };
 exports.SellersModule = SellersModule;
 exports.SellersModule = SellersModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([seller_entity_1.Seller])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([seller_entity_1.Seller, user_entity_1.User, subscription_entity_1.Subscription, product_entity_1.Product, warehouse_entity_1.Warehouse])],
         providers: [sellers_resolver_1.SellersResolver, sellers_service_1.SellersService],
     })
 ], SellersModule);

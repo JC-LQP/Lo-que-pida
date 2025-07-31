@@ -2,12 +2,148 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AddItemToCartInput {
+  cartId: String!
+  productId: String!
+  productVariantId: String!
+  quantity: Int!
+}
+
+type Address {
+  city: String!
+  country: String!
+  createdAt: DateTime!
+  customer: Customer!
+  id: ID!
+  isDefault: Boolean
+  phoneNumber: String
+  postalCode: String
+  province: String!
+  recipientName: String!
+  streetAddress: String!
+  updatedAt: DateTime!
+}
+
+enum BillingCycle {
+  MONTHLY
+  YEARLY
+}
+
+type Cart {
+  createdAt: DateTime!
+  customer: Customer!
+  id: ID!
+  items: [CartItem!]!
+}
+
+type CartItem {
+  cart: Cart!
+  id: ID!
+  product: Product!
+  quantity: Float!
+}
+
+type Category {
+  children: [Category!]
+  description: String
+  id: ID!
+  inventoryItems: [Inventory!]
+  name: String!
+  parent: Category
+}
+
+input CreateAddressInput {
+  city: String!
+  country: String!
+  customerId: String!
+  isDefault: Boolean
+  phoneNumber: String
+  postalCode: String
+  province: String!
+  recipientName: String!
+  streetAddress: String!
+}
+
+input CreateCartInput {
+  customerId: String!
+}
+
+input CreateCategoryInput {
+  description: String
+  name: String!
+  parentId: String
+}
+
+input CreateCustomerInput {
+  userId: String!
+}
+
+input CreateInventoryInput {
+  categoryId: String!
+  productId: String!
+  reservedStock: Int! = 0
+  soldStock: Int! = 0
+  stock: Int!
+}
+
+input CreateOrderInput {
+  customerId: String!
+  paymentId: String!
+  shippingInfoId: String!
+  status: OrderStatus! = PENDING
+  total: Float!
+}
+
+input CreatePaymentInput {
+  orderId: String!
+  provider: PaymentProvider!
+  transactionId: String
+}
+
+input CreateProductInput {
+  condition: ProductCondition!
+  description: String
+  name: String!
+  price: Float!
+  sellerId: String!
+}
+
+input CreateProductReviewInput {
+  comment: String!
+  productId: String!
+  rating: Int!
+  userId: String!
+}
+
+input CreateSellerInput {
+  status: SellerStatus
+  storeDescription: String
+  storeLogo: String
+  storeName: String!
+  subscriptionId: String
+  userId: String!
+}
+
+input CreateSubscriptionInput {
+  billingCycle: BillingCycle!
+  endDate: String!
+  plan: SubscriptionPlan!
+  sellerId: String!
+  startDate: String!
+}
+
 input CreateUserInput {
   email: String!
   firebaseUid: String
   fullName: String
   profileImage: String
   role: UserRole
+}
+
+input CreateWarehouseInput {
+  addressId: String!
+  name: String!
+  sellerId: String!
 }
 
 type Customer {
@@ -22,24 +158,286 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type LoginResponse {
-  accessToken: String!
-  expiresIn: Float
-  refreshToken: String
+type Inventory {
+  category: Category!
+  createdAt: DateTime!
+  id: ID!
+  product: [Product!]
+  reservedStock: Float!
+  soldStock: Float!
+  stock: Float!
+  updatedAt: DateTime!
 }
 
 type Mutation {
+  addItemToCart(input: AddItemToCartInput!): CartItem!
+  createAddress(input: CreateAddressInput!): Address!
+  createCart(input: CreateCartInput!): Cart!
+  createCategory(input: CreateCategoryInput!): Category!
+  createCustomer(input: CreateCustomerInput!): Customer!
+  createInventory(input: CreateInventoryInput!): Inventory!
+  createOrder(input: CreateOrderInput!): Order!
+  createPayment(createPaymentInput: CreatePaymentInput!): Payment!
+  createProduct(createProductInput: CreateProductInput!): Product!
+  createProductReview(input: CreateProductReviewInput!): ProductReview!
+  createSeller(input: CreateSellerInput!): Seller!
+  createSubscription(input: CreateSubscriptionInput!): Subscription!
   createUser(createUserInput: CreateUserInput!): User!
-  firebaseLogin(email: String!, password: String!): LoginResponse!
+  createWarehouse(createWarehouseInput: CreateWarehouseInput!): Warehouse!
+  removeAddress(id: String!): Boolean!
+  removeCartItem(itemId: String!): Boolean!
+  removeCategory(id: String!): Boolean!
+  removeCustomer(id: String!): Customer!
+  removeInventory(id: String!): Boolean!
+  removeOrder(id: String!): Order!
+  removeProduct(id: String!): Product!
+  removeProductReview(id: String!): ProductReview!
+  removeSeller(id: String!): Seller!
+  removeSubscription(id: String!): Subscription!
   removeUser(id: String!): User!
+  removeWarehouse(id: String!): Warehouse!
   syncUser: Boolean!
+  updateAddress(input: UpdateAddressInput!): Address!
+  updateCartItem(input: UpdateCartItemInput!): CartItem!
+  updateCategory(id: String!, input: UpdateCategoryInput!): Category!
+  updateCustomer(input: UpdateCustomerInput!): Customer!
+  updateInventory(id: String!, input: UpdateInventoryInput!): Inventory!
+  updateOrder(input: UpdateOrderInput!): Order!
+  updateProduct(id: String!, updateProductInput: UpdateProductInput!): Product!
+  updateProductReview(input: UpdateProductReviewInput!): ProductReview!
+  updateSeller(input: UpdateSellerInput!): Seller!
+  updateSubscription(input: UpdateSubscriptionInput!): Subscription!
   updateUser(updateUserInput: UpdateUserInput!): User!
+  updateWarehouse(updateWarehouseInput: UpdateWarehouseInput!): Warehouse!
+}
+
+type Order {
+  createdAt: DateTime!
+  customer: Customer!
+  id: ID!
+  items: [OrderItem!]!
+  status: OrderStatus!
+  total: Float!
+  updatedAt: DateTime!
+}
+
+type OrderItem {
+  order: Order!
+  orderId: String!
+  product: Product!
+  productId: String!
+  quantity: Float!
+  unitPrice: Float!
+}
+
+enum OrderStatus {
+  CANCELLED
+  DELIVERED
+  PENDING
+  PROCESSING
+  SHIPPED
+}
+
+enum PaidStatus {
+  PAID
+  UNPAID
+}
+
+type Payment {
+  createdAt: DateTime!
+  id: ID!
+  order: Order!
+  provider: PaymentProvider!
+  status: PaymentStatus!
+  transactionId: String
+}
+
+enum PaymentProvider {
+  KUSHKI
+  LOCAL
+  STRIPE
+}
+
+enum PaymentStatus {
+  FAILED
+  PAID
+  PENDING
+}
+
+type Product {
+  condition: ProductCondition!
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  inventory: Inventory
+  name: String!
+  orderItems: [OrderItem!]
+  price: Float!
+  reviews: [ProductReview!]
+  seller: Seller!
+  updatedAt: DateTime!
+}
+
+enum ProductCondition {
+  NEW
+  REFURBISHED
+  USED
+}
+
+type ProductReview {
+  comment: String!
+  createdAt: DateTime!
+  id: ID!
+  product: Product!
+  rating: Int!
+  updatedAt: DateTime!
+  user: User!
 }
 
 type Query {
-  getCustomers: [Customer!]!
+  address(id: String!): Address!
+  addresses: [Address!]!
+  customer(id: String!): Customer!
+  customers: [Customer!]!
+  findAllCategories: [Category!]!
+  findAllInventory: [Inventory!]!
+  findCartByCustomer(customerId: String!): Cart
+  findOneCategory(id: String!): Category!
+  findOneInventory(id: String!): Inventory!
+  me: User!
+  order(id: String!): Order!
+  orders: [Order!]!
+  product(id: String!): Product!
+  productReview(id: String!): ProductReview!
+  productReviews: [ProductReview!]!
+  products: [Product!]!
+  seller(id: String!): Seller!
+  sellers: [Seller!]!
+  subscription(id: String!): Subscription!
+  subscriptions: [Subscription!]!
   user(id: String!): User!
   users: [User!]!
+  warehouse(id: String!): Warehouse!
+  warehouses: [Warehouse!]!
+}
+
+type Seller {
+  createdAt: DateTime!
+  id: ID!
+  products: [Product!]!
+  status: SellerStatus!
+  storeDescription: String
+  storeLogo: String
+  storeName: String!
+  subscription: Subscription
+  user: User!
+  warehouses: [Warehouse!]!
+}
+
+enum SellerStatus {
+  ACTIVE
+  BANNED
+  INACTIVE
+}
+
+type Subscription {
+  billingCycle: BillingCycle!
+  createdAt: DateTime!
+  endDate: DateTime!
+  id: ID!
+  plan: SubscriptionPlan!
+  seller: Seller!
+  startDate: DateTime!
+  status: PaidStatus!
+}
+
+enum SubscriptionPlan {
+  BASIC
+  ENTERPRISE
+  PREMIUM
+}
+
+input UpdateAddressInput {
+  city: String
+  country: String
+  customerId: String
+  id: String!
+  isDefault: Boolean
+  phoneNumber: String
+  postalCode: String
+  province: String
+  recipientName: String
+  streetAddress: String
+}
+
+input UpdateCartItemInput {
+  itemId: String!
+  quantity: Int!
+}
+
+input UpdateCategoryInput {
+  description: String
+  name: String
+  parentId: String
+}
+
+input UpdateCustomerInput {
+  id: String!
+  userId: String
+}
+
+input UpdateInventoryInput {
+  categoryId: String
+  id: ID!
+  productId: String
+  reservedStock: Int = 0
+  soldStock: Int = 0
+  stock: Int
+}
+
+input UpdateOrderInput {
+  customerId: String
+  id: String!
+  paymentId: String
+  shippingInfoId: String
+  status: OrderStatus = PENDING
+  total: Float
+}
+
+input UpdateProductInput {
+  condition: ProductCondition
+  description: String
+  name: String
+  price: Float
+  sellerId: String
+}
+
+input UpdateProductReviewInput {
+  comment: String
+  id: String!
+  productId: String
+  rating: Int
+  userId: String
+}
+
+input UpdateSellerInput {
+  id: String!
+  status: SellerStatus
+  storeDescription: String
+  storeLogo: String
+  storeName: String
+  subscriptionId: String
+  userId: String
+}
+
+input UpdateSubscriptionInput {
+  billingCycle: BillingCycle
+  endDate: String
+  id: String!
+  plan: SubscriptionPlan
+  sellerId: String
+  startDate: String
+  status: PaidStatus
 }
 
 input UpdateUserInput {
@@ -51,6 +449,13 @@ input UpdateUserInput {
   role: UserRole
 }
 
+input UpdateWarehouseInput {
+  addressId: String
+  id: String!
+  name: String
+  sellerId: String
+}
+
 type User {
   createdAt: DateTime!
   email: String!
@@ -60,6 +465,7 @@ type User {
   isVerified: Boolean!
   profileImage: String
   role: UserRole!
+  seller: Seller
 }
 
 """The role of the user"""
@@ -67,4 +473,13 @@ enum UserRole {
   ADMIN
   CUSTOMER
   SELLER
+}
+
+type Warehouse {
+  address: Address!
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  seller: Seller!
+  updatedAt: DateTime!
 }

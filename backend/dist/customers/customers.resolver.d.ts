@@ -10,4 +10,7 @@ export declare class CustomersResolver {
     findOne(id: string): Promise<Customer>;
     updateCustomer(input: UpdateCustomerInput): Promise<Customer>;
     removeCustomer(id: string): Promise<Customer>;
+    email(customer: Customer): string;
+    fullName(customer: Customer): string;
+    phoneNumber(customer: Customer): string | null;
 }
