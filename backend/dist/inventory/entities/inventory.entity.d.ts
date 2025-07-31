@@ -3,7 +3,7 @@ import { Category } from '../../categories/entities/category.entity';
 export declare class Inventory {
     id: string;
     category: Category;
-    product: Product[];
+    products: Product[];
     stock: number;
     reservedStock: number;
     soldStock: number;

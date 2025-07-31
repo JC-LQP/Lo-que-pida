@@ -15,24 +15,36 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.InventoryService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const inventory_entity_1 = require("./entities/inventory.entity");
 const typeorm_2 = require("typeorm");
+const inventory_entity_1 = require("./entities/inventory.entity");
+const category_entity_1 = require("../categories/entities/category.entity");
 let InventoryService = class InventoryService {
     inventoryRepository;
-    constructor(inventoryRepository) {
+    categoryRepository;
+    constructor(inventoryRepository, categoryRepository) {
         this.inventoryRepository = inventoryRepository;
+        this.categoryRepository = categoryRepository;
     }
     async create(input) {
-        const inventory = this.inventoryRepository.create(input);
+        const category = await this.categoryRepository.findOneBy({ id: input.categoryId });
+        if (!category) {
+            throw new common_1.NotFoundException(`Category with ID ${input.categoryId} not found`);
+        }
+        const inventory = this.inventoryRepository.create({
+            ...input,
+            category,
+        });
         return this.inventoryRepository.save(inventory);
     }
     async findAll() {
-        return this.inventoryRepository.find({ relations: ['products'] });
+        return this.inventoryRepository.find({
+            relations: ['products', 'category'],
+        });
     }
     async findOne(id) {
         const inventory = await this.inventoryRepository.findOne({
             where: { id },
-            relations: ['products'],
+            relations: ['products', 'category'],
         });
         if (!inventory) {
             throw new common_1.NotFoundException(`Inventory with ID ${id} not found`);
@@ -41,6 +53,13 @@ let InventoryService = class InventoryService {
     }
     async update(id, input) {
         const inventory = await this.findOne(id);
+        if (input.categoryId) {
+            const category = await this.categoryRepository.findOneBy({ id: input.categoryId });
+            if (!category) {
+                throw new common_1.NotFoundException(`Category with ID ${input.categoryId} not found`);
+            }
+            inventory.category = category;
+        }
         Object.assign(inventory, input);
         return this.inventoryRepository.save(inventory);
     }
@@ -53,6 +72,8 @@ exports.InventoryService = InventoryService;
 exports.InventoryService = InventoryService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(inventory_entity_1.Inventory)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(category_entity_1.Category)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], InventoryService);
 //# sourceMappingURL=inventory.service.js.map

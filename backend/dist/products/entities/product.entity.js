@@ -68,7 +68,7 @@ __decorate([
 ], Product.prototype, "reviews", void 0);
 __decorate([
     (0, graphql_1.Field)(() => inventory_entity_1.Inventory, { nullable: true }),
-    (0, typeorm_1.ManyToOne)(() => inventory_entity_1.Inventory, (inventory) => inventory.product),
+    (0, typeorm_1.ManyToOne)(() => inventory_entity_1.Inventory, (inventory) => inventory.products, { nullable: true }),
     __metadata("design:type", inventory_entity_1.Inventory)
 ], Product.prototype, "inventory", void 0);
 __decorate([

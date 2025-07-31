@@ -17,7 +17,7 @@ const graphql_1 = require("@nestjs/graphql");
 let Inventory = class Inventory {
     id;
     category;
-    product;
+    products;
     stock;
     reservedStock;
     soldStock;
@@ -39,7 +39,7 @@ __decorate([
     (0, graphql_1.Field)(() => [product_entity_1.Product], { nullable: true }),
     (0, typeorm_1.OneToMany)(() => product_entity_1.Product, (product) => product.inventory),
     __metadata("design:type", Array)
-], Inventory.prototype, "product", void 0);
+], Inventory.prototype, "products", void 0);
 __decorate([
     (0, graphql_1.Field)(),
     (0, typeorm_1.Column)('int'),

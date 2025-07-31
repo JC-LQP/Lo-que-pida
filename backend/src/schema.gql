@@ -162,7 +162,7 @@ type Inventory {
   category: Category!
   createdAt: DateTime!
   id: ID!
-  product: [Product!]
+  products: [Product!]
   reservedStock: Float!
   soldStock: Float!
   stock: Float!

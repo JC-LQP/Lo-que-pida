@@ -47,7 +47,7 @@ export class Product {
   reviews?: ProductReview[];
 
   @Field(() => Inventory, { nullable: true })
-  @ManyToOne(() => Inventory, (inventory) => inventory.product)
+  @ManyToOne(() => Inventory, (inventory) => inventory.products, { nullable: true })
   inventory?: Inventory;
 
   @Field(() => [OrderItem], { nullable: true })

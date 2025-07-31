@@ -4,7 +4,6 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import { Order } from './order.entity';
 import { Product } from '../../products/entities/product.entity';
 
-
 @ObjectType()
 @Entity({ name: 'order_items' })
 export class OrderItem {

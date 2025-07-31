@@ -24,7 +24,7 @@ export class Inventory {
 
   @Field(() => [Product], { nullable: true })
   @OneToMany(() => Product, (product) => product.inventory)
-  product: Product[];
+  products: Product[];
 
   @Field()
   @Column('int')
