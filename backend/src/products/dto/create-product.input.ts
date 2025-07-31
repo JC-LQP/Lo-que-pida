@@ -1,6 +1,6 @@
 import { InputType, Field, Float } from '@nestjs/graphql';
 import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
-import { ProductCondition } from '../../../common/enums/product-condition.enum';
+import { ProductCondition } from '../../common/enums/product-condition.enum';
 
 @InputType()
 export class CreateProductInput {

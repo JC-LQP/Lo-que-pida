@@ -6,17 +6,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WarehousesModule = void 0;
+exports.WarehouseModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const warehouse_entity_1 = require("./warehouse.entity");
-let WarehousesModule = class WarehousesModule {
+const warehouse_entity_1 = require("./entities/warehouse.entity");
+const warehouse_service_1 = require("./warehouse.service");
+const warehouse_resolver_1 = require("./warehouse.resolver");
+let WarehouseModule = class WarehouseModule {
 };
-exports.WarehousesModule = WarehousesModule;
-exports.WarehousesModule = WarehousesModule = __decorate([
+exports.WarehouseModule = WarehouseModule;
+exports.WarehouseModule = WarehouseModule = __decorate([
     (0, common_1.Module)({
         imports: [typeorm_1.TypeOrmModule.forFeature([warehouse_entity_1.Warehouse])],
-        exports: [typeorm_1.TypeOrmModule],
+        providers: [warehouse_service_1.WarehouseService, warehouse_resolver_1.WarehouseResolver],
     })
-], WarehousesModule);
+], WarehouseModule);
 //# sourceMappingURL=warehouses.module.js.map

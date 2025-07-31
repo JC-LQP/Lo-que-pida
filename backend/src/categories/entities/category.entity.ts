@@ -1,17 +1,34 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Product } from '../../products/entities/product.entity';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Inventory } from '../../inventory/entities/inventory.entity';
 
-@Entity({ name: 'categories' })
+@ObjectType()
+@Entity('categories')
 export class Category {
+  @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ length: 100 })
+  @Field()
+  @Column()
   name: string;
 
-  @Column({ length: 255, nullable: true })
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   description?: string;
 
-  @OneToMany(() => Product, (product) => product.category)
-  products: Product[];
+  @Field(() => Category, { nullable: true })
+  @ManyToOne(() => Category, (category) => category.children, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  parent?: Category;
+
+  @Field(() => [Category], { nullable: true })
+  @OneToMany(() => Category, (category) => category.parent)
+  children?: Category[];
+
+  @Field(() => [Inventory], { nullable: true })
+  @OneToMany(() => Inventory, (inventory) => inventory.category)
+  inventoryItems?: Inventory[];
 }

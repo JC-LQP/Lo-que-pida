@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Warehouse } from './entities/warehouse.entity';
@@ -34,8 +34,12 @@ export class WarehouseService {
     return this.findOne(id);
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<boolean> {
     const warehouse = await this.findOne(id);
-    return this.warehouseRepository.remove(warehouse);
+    if (!warehouse) {
+      throw new NotFoundException(`Warehouse #${id} not found`);
+    }
+    await this.warehouseRepository.remove(warehouse);
+    return true;
   }
 }

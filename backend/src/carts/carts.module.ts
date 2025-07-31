@@ -5,10 +5,11 @@ import { CartsResolver } from './carts.resolver';
 import { Cart } from './entities/cart.entity';
 import { CartItem } from './entities/cart-item.entity';
 import { Customer } from '../customers/entities/customer.entity';
-import { ProductVariant } from '../product-variants/entities/product-variant.entity';
+import { ProductsModule } from '../products/products.module';
+import { Product } from 'src/products/entities/product.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Cart, CartItem, Customer, ProductVariant])],
+  imports: [TypeOrmModule.forFeature([Cart, CartItem, Customer, Product]), ProductsModule],
   providers: [CartsResolver, CartsService],
 })
 export class CartsModule {}

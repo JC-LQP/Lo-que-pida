@@ -10,6 +10,9 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
+const graphql_1 = require("@nestjs/graphql");
+const apollo_1 = require("@nestjs/apollo");
+const path_1 = require("path");
 const users_module_1 = require("./users/users.module");
 const sellers_module_1 = require("./sellers/sellers.module");
 const customers_module_1 = require("./customers/customers.module");
@@ -18,12 +21,9 @@ const orders_module_1 = require("./orders/orders.module");
 const payments_module_1 = require("./payments/payments.module");
 const subscriptions_module_1 = require("./subscriptions/subscriptions.module");
 const warehouses_module_1 = require("./warehouses/warehouses.module");
-const cart_module_1 = require("./cart/cart.module");
-const reviews_module_1 = require("./reviews/reviews.module");
+const carts_module_1 = require("./carts/carts.module");
+const product_reviews_module_1 = require("./product_reviews/product-reviews.module");
 const addresses_module_1 = require("./addresses/addresses.module");
-const graphql_1 = require("@nestjs/graphql");
-const apollo_1 = require("@nestjs/apollo");
-const path_1 = require("path");
 const auth_module_1 = require("./auth/auth.module");
 const firebase_module_1 = require("./firebase/firebase.module");
 console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
@@ -61,9 +61,9 @@ exports.AppModule = AppModule = __decorate([
             orders_module_1.OrdersModule,
             payments_module_1.PaymentsModule,
             subscriptions_module_1.SubscriptionsModule,
-            warehouses_module_1.WarehousesModule,
-            cart_module_1.CartModule,
-            reviews_module_1.ReviewsModule,
+            warehouses_module_1.WarehouseModule,
+            carts_module_1.CartsModule,
+            product_reviews_module_1.ProductReviewsModule,
             addresses_module_1.AddressesModule,
             auth_module_1.AuthModule,
         ],

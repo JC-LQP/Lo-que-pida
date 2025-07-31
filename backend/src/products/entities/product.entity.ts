@@ -8,9 +8,11 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ObjectType, Field, ID, Float } from '@nestjs/graphql';
+
 import { Seller } from '../../sellers/entities/seller.entity';
 import { ProductReview } from '../../product_reviews/entities/product-review.entity';
 import { Inventory } from '../../inventory/entities/inventory.entity';
+import { OrderItem } from '../../orders/entities/order-item.entity';
 import { ProductCondition } from '../../common/enums/product-condition.enum';
 
 @ObjectType()
@@ -44,9 +46,13 @@ export class Product {
   @OneToMany(() => ProductReview, (review) => review.product)
   reviews?: ProductReview[];
 
-  @Field(() => [Inventory], { nullable: true })
-  @OneToMany(() => Inventory, (inventory) => inventory.product)
-  inventory?: Inventory[];
+  @Field(() => Inventory)
+  @ManyToOne(() => Inventory, (inventory) => inventory.product)
+  inventory: Inventory;
+
+  @Field(() => [OrderItem], { nullable: true })
+  @OneToMany(() => OrderItem, (item) => item.product)
+  orderItems?: OrderItem[];
 
   @Field()
   @CreateDateColumn({ name: 'created_at' })

@@ -31,9 +31,7 @@ export class CartsResolver {
   }
 
   @Query(() => Cart, { nullable: true })
-  findCartByCustomer(
-    @Args('customerId', { type: () => String }) customerId: string,
-  ) {
+  findCartByCustomer(@Args('customerId', { type: () => String }) customerId: string) {
     return this.cartsService.findCartByCustomer(customerId);
   }
 }

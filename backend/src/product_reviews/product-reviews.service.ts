@@ -27,15 +27,19 @@ export class ProductReviewsService {
     return this.reviewRepo.find({ relations: ['user', 'product'] });
   }
 
-  findOne(id: string): Promise<ProductReview> {
-    return this.reviewRepo.findOne({
+  async findOne(id: string): Promise<ProductReview> {
+    const review = await this.reviewRepo.findOne({
       where: { id },
       relations: ['user', 'product'],
     });
+    if (!review) {
+      throw new NotFoundException(`Review #${id} not found`);
+    }
+    return review;
   }
 
   async update(id: string, input: UpdateProductReviewInput): Promise<ProductReview> {
-    const review = await this.reviewRepo.preload({ id, ...input });
+    const review = await this.reviewRepo.preload(input);
     if (!review) throw new NotFoundException(`Review #${id} not found`);
     return this.reviewRepo.save(review);
   }

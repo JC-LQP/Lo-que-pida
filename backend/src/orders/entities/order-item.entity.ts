@@ -4,6 +4,7 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import { Order } from './order.entity';
 import { Product } from '../../products/entities/product.entity';
 
+
 @ObjectType()
 @Entity({ name: 'order_items' })
 export class OrderItem {
@@ -21,7 +22,7 @@ export class OrderItem {
   order: Order;
 
   @Field(() => Product)
-  @ManyToOne(() => Product, { eager: true })
+  @ManyToOne(() => Product, (product) => product.orderItems, { eager: true })
   @JoinColumn({ name: 'product_id' })
   product: Product;
 

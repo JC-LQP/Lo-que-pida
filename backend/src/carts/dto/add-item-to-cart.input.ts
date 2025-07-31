@@ -8,6 +8,9 @@ export class AddItemToCartInput {
   cartId: string;
 
   @Field(() => String)
+  productId: string;
+
+  @Field(() => String)
   @IsUUID()
   productVariantId: string;
 

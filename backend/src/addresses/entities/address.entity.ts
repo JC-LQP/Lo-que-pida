@@ -1,44 +1,69 @@
-import { InputType, Field } from '@nestjs/graphql';
-import { IsString, IsOptional, IsBoolean } from 'class-validator';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { Customer } from '../../customers/entities/customer.entity';
 
-@InputType()
-export class CreateAddressInput {
+@ObjectType()
+@Entity('addresses')
+export class Address {
+  @Field(() => ID)
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
   @Field()
-  @IsString()
+  @Column()
   recipientName: string;
 
   @Field()
-  @IsString()
+  @Column()
   streetAddress: string;
 
   @Field()
-  @IsString()
+  @Column()
   city: string;
 
   @Field()
-  @IsString()
+  @Column()
   province: string;
 
   @Field()
-  @IsString()
+  @Column()
   country: string;
 
   @Field({ nullable: true })
-  @IsOptional()
-  @IsString()
+  @Column({ nullable: true })
   postalCode?: string;
 
   @Field({ nullable: true })
-  @IsOptional()
-  @IsString()
+  @Column({ nullable: true })
   phoneNumber?: string;
 
   @Field({ nullable: true })
-  @IsOptional()
-  @IsBoolean()
+  @Column({ default: false })
   isDefault?: boolean;
 
+  @Field(() => Customer)
+  @ManyToOne(() => Customer, (customer) => customer.addresses, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'customer_id' })
+  customer: Customer;
+
+  @Column()
+  customer_id: string;
+
   @Field()
-  @IsString()
-  customerId: string;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @Field()
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 }

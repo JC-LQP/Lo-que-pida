@@ -11,6 +11,7 @@ import {
 import { User } from '../../users/entities/user.entity';
 import { Subscription } from '../../subscriptions/entities/subscription.entity';
 import { Product } from '../../products/entities/product.entity';
+import { Warehouse } from '../../warehouses/entities/warehouse.entity';
 
 /**
  * Enum representing the status of a seller.
@@ -55,4 +56,7 @@ export class Seller {
 
   @OneToMany(() => Product, (product) => product.seller)
   products: Product[];
+
+  @OneToMany(() => Warehouse, (warehouse) => warehouse.seller)
+  warehouses: Warehouse[];
 }

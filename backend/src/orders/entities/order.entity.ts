@@ -1,14 +1,17 @@
-// src/orders/entities/order.entity.ts
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
   JoinColumn,
 } from 'typeorm';
 import { Customer } from '../../customers/entities/customer.entity';
+import { OrderItem } from './order-item.entity';
 
 export enum OrderStatus {
   PENDING = 'pending',
@@ -26,6 +29,10 @@ export class Order {
   @ManyToOne(() => Customer, { eager: true })
   @JoinColumn({ name: 'customer_id' })
   customer: Customer;
+
+  @Field(() => [OrderItem])
+  @OneToMany(() => OrderItem, (item) => item.order)
+  items: OrderItem[];
 
   @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.PENDING })
   status: OrderStatus;

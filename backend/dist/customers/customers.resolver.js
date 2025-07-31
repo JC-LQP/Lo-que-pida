@@ -8,30 +8,74 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CustomersResolver = void 0;
 const graphql_1 = require("@nestjs/graphql");
-const customer_model_1 = require("./models/customer.model");
+const customers_service_1 = require("./customers.service");
+const customer_entity_1 = require("./entities/customer.entity");
+const create_customer_input_1 = require("./dto/create-customer.input");
+const update_customer_input_1 = require("./dto/update-customer.input");
 let CustomersResolver = class CustomersResolver {
-    getCustomers() {
-        return [
-            {
-                id: '1',
-                fullName: 'Juan Pérez',
-                email: 'juan@example.com',
-                phoneNumber: '0991234567',
-            },
-        ];
+    customersService;
+    constructor(customersService) {
+        this.customersService = customersService;
+    }
+    createCustomer(input) {
+        return this.customersService.create(input);
+    }
+    findAll() {
+        return this.customersService.findAll();
+    }
+    findOne(id) {
+        return this.customersService.findOne(id);
+    }
+    updateCustomer(input) {
+        return this.customersService.update(input);
+    }
+    removeCustomer(id) {
+        return this.customersService.remove(id);
     }
 };
 exports.CustomersResolver = CustomersResolver;
 __decorate([
-    (0, graphql_1.Query)(() => [customer_model_1.Customer]),
+    (0, graphql_1.Mutation)(() => customer_entity_1.Customer),
+    __param(0, (0, graphql_1.Args)('input')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_customer_input_1.CreateCustomerInput]),
+    __metadata("design:returntype", Promise)
+], CustomersResolver.prototype, "createCustomer", null);
+__decorate([
+    (0, graphql_1.Query)(() => [customer_entity_1.Customer], { name: 'customers' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Array)
-], CustomersResolver.prototype, "getCustomers", null);
+    __metadata("design:returntype", Promise)
+], CustomersResolver.prototype, "findAll", null);
+__decorate([
+    (0, graphql_1.Query)(() => customer_entity_1.Customer, { name: 'customer' }),
+    __param(0, (0, graphql_1.Args)('id', { type: () => String })),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], CustomersResolver.prototype, "findOne", null);
+__decorate([
+    (0, graphql_1.Mutation)(() => customer_entity_1.Customer),
+    __param(0, (0, graphql_1.Args)('input')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [update_customer_input_1.UpdateCustomerInput]),
+    __metadata("design:returntype", Promise)
+], CustomersResolver.prototype, "updateCustomer", null);
+__decorate([
+    (0, graphql_1.Mutation)(() => customer_entity_1.Customer),
+    __param(0, (0, graphql_1.Args)('id', { type: () => String })),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], CustomersResolver.prototype, "removeCustomer", null);
 exports.CustomersResolver = CustomersResolver = __decorate([
-    (0, graphql_1.Resolver)(() => customer_model_1.Customer)
+    (0, graphql_1.Resolver)(() => customer_entity_1.Customer),
+    __metadata("design:paramtypes", [customers_service_1.CustomersService])
 ], CustomersResolver);
 //# sourceMappingURL=customers.resolver.js.map

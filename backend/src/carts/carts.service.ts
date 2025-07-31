@@ -7,7 +7,7 @@ import { CreateCartInput } from './dto/create-cart.input';
 import { AddItemToCartInput } from './dto/add-item-to-cart.input';
 import { UpdateCartItemInput } from './dto/update-cart-item.input';
 import { Customer } from '../customers/entities/customer.entity';
-import { ProductVariant } from '../product-variants/entities/product-variant.entity';
+import { Product } from '../products/entities/product.entity';
 
 @Injectable()
 export class CartsService {
@@ -21,8 +21,8 @@ export class CartsService {
     @InjectRepository(Customer)
     private customerRepo: Repository<Customer>,
 
-    @InjectRepository(ProductVariant)
-    private variantRepo: Repository<ProductVariant>,
+    @InjectRepository(Product)
+    private productRepo: Repository<Product>,
   ) {}
 
   async create(input: CreateCartInput): Promise<Cart> {
@@ -37,11 +37,11 @@ export class CartsService {
     const cart = await this.cartRepo.findOne({ where: { id: input.cartId } });
     if (!cart) throw new NotFoundException('Cart not found');
 
-    const variant = await this.variantRepo.findOne({ where: { id: input.productVariantId } });
-    if (!variant) throw new NotFoundException('Product variant not found');
+    const product = await this.productRepo.findOne({ where: { id: input.productId } });
+    if (!product) throw new NotFoundException('Product not found');
 
     const existingItem = await this.itemRepo.findOne({
-      where: { cart: { id: input.cartId }, productVariant: { id: input.productVariantId } },
+      where: { cart: { id: input.cartId }, product: { id: input.productId } }, 
     });
 
     if (existingItem) {
@@ -51,7 +51,7 @@ export class CartsService {
 
     const newItem = this.itemRepo.create({
       cart,
-      productVariant: variant,
+      product,
       quantity: input.quantity,
     });
 
@@ -68,13 +68,13 @@ export class CartsService {
 
   async removeItem(itemId: string): Promise<boolean> {
     const result = await this.itemRepo.delete(itemId);
-    return result.affected > 0;
+    return (result.affected ?? 0) > 0;
   }
 
   async findCartByCustomer(customerId: string): Promise<Cart | null> {
     return this.cartRepo.findOne({
       where: { customer: { id: customerId } },
-      relations: ['items', 'items.productVariant'],
+      relations: ['items', 'items.product'],
     });
   }
 }
