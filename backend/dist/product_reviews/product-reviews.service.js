@@ -17,18 +17,40 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const product_review_entity_1 = require("./entities/product-review.entity");
+const user_entity_1 = require("../users/entities/user.entity");
+const product_entity_1 = require("../products/entities/product.entity");
 let ProductReviewsService = class ProductReviewsService {
     reviewRepo;
-    constructor(reviewRepo) {
+    userRepo;
+    productRepo;
+    constructor(reviewRepo, userRepo, productRepo) {
         this.reviewRepo = reviewRepo;
+        this.userRepo = userRepo;
+        this.productRepo = productRepo;
     }
-    create(input) {
+    async create(input) {
+        const user = await this.userRepo.findOne({ where: { id: input.userId } });
+        if (!user) {
+            throw new common_1.NotFoundException(`User with ID "${input.userId}" not found`);
+        }
+        const product = await this.productRepo.findOne({ where: { id: input.productId } });
+        if (!product) {
+            throw new common_1.NotFoundException(`Product with ID "${input.productId}" not found`);
+        }
         const review = this.reviewRepo.create({
             ...input,
-            user: { id: input.userId },
-            product: { id: input.productId },
+            user,
+            product,
         });
-        return this.reviewRepo.save(review);
+        const savedReview = await this.reviewRepo.save(review);
+        const reviewWithRelations = await this.reviewRepo.findOne({
+            where: { id: savedReview.id },
+            relations: ['user', 'product'],
+        });
+        if (!reviewWithRelations) {
+            throw new common_1.NotFoundException(`Review with ID "${savedReview.id}" not found after creation`);
+        }
+        return reviewWithRelations;
     }
     findAll() {
         return this.reviewRepo.find({ relations: ['user', 'product'] });
@@ -58,6 +80,10 @@ exports.ProductReviewsService = ProductReviewsService;
 exports.ProductReviewsService = ProductReviewsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(product_review_entity_1.ProductReview)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
+    __param(2, (0, typeorm_1.InjectRepository)(product_entity_1.Product)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
+        typeorm_2.Repository])
 ], ProductReviewsService);
 //# sourceMappingURL=product-reviews.service.js.map

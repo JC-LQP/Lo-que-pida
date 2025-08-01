@@ -17,14 +17,47 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const shipping_info_entity_1 = require("./entities/shipping-info.entity");
+const order_entity_1 = require("../orders/entities/order.entity");
+const address_entity_1 = require("../addresses/entities/address.entity");
 let ShippingInfoService = class ShippingInfoService {
     shippingInfoRepository;
-    constructor(shippingInfoRepository) {
+    orderRepository;
+    addressRepository;
+    constructor(shippingInfoRepository, orderRepository, addressRepository) {
         this.shippingInfoRepository = shippingInfoRepository;
+        this.orderRepository = orderRepository;
+        this.addressRepository = addressRepository;
     }
     async create(input) {
-        const shippingInfo = this.shippingInfoRepository.create(input);
-        return this.shippingInfoRepository.save(shippingInfo);
+        const { orderId, addressId, ...shippingData } = input;
+        const existingShippingInfo = await this.shippingInfoRepository.findOne({
+            where: { order: { id: orderId } }
+        });
+        if (existingShippingInfo) {
+            throw new Error(`Shipping info already exists for order ${orderId}`);
+        }
+        const order = await this.orderRepository.findOne({ where: { id: orderId } });
+        if (!order) {
+            throw new common_1.NotFoundException(`Order with id ${orderId} not found`);
+        }
+        const address = await this.addressRepository.findOne({ where: { id: addressId } });
+        if (!address) {
+            throw new common_1.NotFoundException(`Address with id ${addressId} not found`);
+        }
+        const shippingInfo = this.shippingInfoRepository.create({
+            ...shippingData,
+            order,
+            address,
+        });
+        const savedShippingInfo = await this.shippingInfoRepository.save(shippingInfo);
+        const result = await this.shippingInfoRepository.findOne({
+            where: { id: savedShippingInfo.id },
+            relations: ['order', 'address'],
+        });
+        if (!result) {
+            throw new common_1.NotFoundException(`Failed to retrieve created ShippingInfo`);
+        }
+        return result;
     }
     async findAll() {
         return this.shippingInfoRepository.find({ relations: ['order', 'address'] });
@@ -54,6 +87,10 @@ exports.ShippingInfoService = ShippingInfoService;
 exports.ShippingInfoService = ShippingInfoService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(shipping_info_entity_1.ShippingInfo)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(order_entity_1.Order)),
+    __param(2, (0, typeorm_1.InjectRepository)(address_entity_1.Address)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
+        typeorm_2.Repository])
 ], ShippingInfoService);
 //# sourceMappingURL=shipping-info.service.js.map

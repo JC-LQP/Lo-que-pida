@@ -55,8 +55,8 @@ __decorate([
     __metadata("design:type", String)
 ], Subscription.prototype, "id", void 0);
 __decorate([
-    (0, graphql_1.Field)(() => seller_entity_1.Seller),
-    (0, typeorm_1.ManyToOne)(() => seller_entity_1.Seller, (seller) => seller.subscription, { onDelete: 'CASCADE' }),
+    (0, graphql_1.Field)(() => seller_entity_1.Seller, { nullable: true }),
+    (0, typeorm_1.ManyToOne)(() => seller_entity_1.Seller, (seller) => seller.subscription, { onDelete: 'CASCADE', nullable: true }),
     __metadata("design:type", seller_entity_1.Seller)
 ], Subscription.prototype, "seller", void 0);
 __decorate([

@@ -24,4 +24,5 @@ export class CreateUserInput {
   @Field({ nullable: true })
   @IsOptional()
   firebaseUid?: string;
+
 }

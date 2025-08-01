@@ -1,5 +1,5 @@
 export declare class CreateInventoryInput {
-    productId: string;
+    productId?: string;
     categoryId: string;
     stock: number;
     reservedStock?: number;

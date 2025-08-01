@@ -12,15 +12,44 @@ export class ProductReviewsService {
   constructor(
     @InjectRepository(ProductReview)
     private reviewRepo: Repository<ProductReview>,
+    @InjectRepository(User)
+    private userRepo: Repository<User>,
+    @InjectRepository(Product)
+    private productRepo: Repository<Product>,
   ) {}
 
-  create(input: CreateProductReviewInput): Promise<ProductReview> {
+  async create(input: CreateProductReviewInput): Promise<ProductReview> {
+    // Validate that the user exists
+    const user = await this.userRepo.findOne({ where: { id: input.userId } });
+    if (!user) {
+      throw new NotFoundException(`User with ID "${input.userId}" not found`);
+    }
+
+    // Validate that the product exists
+    const product = await this.productRepo.findOne({ where: { id: input.productId } });
+    if (!product) {
+      throw new NotFoundException(`Product with ID "${input.productId}" not found`);
+    }
+
     const review = this.reviewRepo.create({
       ...input,
-      user: { id: input.userId } as User,
-      product: { id: input.productId } as Product,
+      user,
+      product,
     });
-    return this.reviewRepo.save(review);
+    
+    const savedReview = await this.reviewRepo.save(review);
+    
+    // Return with relations loaded
+    const reviewWithRelations = await this.reviewRepo.findOne({
+      where: { id: savedReview.id },
+      relations: ['user', 'product'],
+    });
+    
+    if (!reviewWithRelations) {
+      throw new NotFoundException(`Review with ID "${savedReview.id}" not found after creation`);
+    }
+    
+    return reviewWithRelations;
   }
 
   findAll(): Promise<ProductReview[]> {

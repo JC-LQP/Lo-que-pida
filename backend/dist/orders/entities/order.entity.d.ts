@@ -1,5 +1,7 @@
 import { Customer } from '../../customers/entities/customer.entity';
 import { OrderItem } from './order-item.entity';
+import { Payment } from '../../payments/entities/payment.entity';
+import { ShippingInfo } from '../../shipping-info/entities/shipping-info.entity';
 export declare enum OrderStatus {
     PENDING = "pending",
     PROCESSING = "processing",
@@ -9,8 +11,10 @@ export declare enum OrderStatus {
 }
 export declare class Order {
     id: string;
-    customer: Customer;
+    customer?: Customer;
     items: OrderItem[];
+    payment?: Payment;
+    shippingInfo?: ShippingInfo;
     status: OrderStatus;
     total: number;
     createdAt: Date;

@@ -20,6 +20,7 @@ import { AuthModule } from './auth/auth.module';
 import { FirebaseModule } from './firebase/firebase.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { CategoriesModule } from './categories/categories.module';
+import { ShippingInfoModule } from './shipping-info/shipping-info.module';
 
 console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
 
@@ -62,6 +63,7 @@ console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
     AuthModule,
     InventoryModule,
     CategoriesModule,
+    ShippingInfoModule,
   ],
 })
 export class AppModule {}

@@ -57,7 +57,7 @@ __decorate([
     __metadata("design:type", String)
 ], Product.prototype, "condition", void 0);
 __decorate([
-    (0, graphql_1.Field)(() => seller_entity_1.Seller),
+    (0, graphql_1.Field)(() => seller_entity_1.Seller, { nullable: true }),
     (0, typeorm_1.ManyToOne)(() => seller_entity_1.Seller, (seller) => seller.products),
     __metadata("design:type", seller_entity_1.Seller)
 ], Product.prototype, "seller", void 0);

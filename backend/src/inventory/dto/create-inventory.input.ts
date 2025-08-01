@@ -1,11 +1,12 @@
 import { InputType, Field, Int } from '@nestjs/graphql';
-import { IsUUID, IsInt, Min } from 'class-validator';
+import { IsUUID, IsInt, Min, IsOptional } from 'class-validator';
 
 @InputType()
 export class CreateInventoryInput {
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsUUID()
-  productId: string;
+  @IsOptional()
+  productId?: string;
 
   @Field(() => String)
   @IsUUID()

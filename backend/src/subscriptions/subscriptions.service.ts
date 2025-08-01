@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Subscription } from './entities/subscription.entity';
+import { Seller } from '../sellers/entities/seller.entity';
 import { CreateSubscriptionInput } from './dto/create-subscription.input';
 import { UpdateSubscriptionInput } from './dto/update-subscription.input';
 
@@ -10,10 +11,22 @@ export class SubscriptionsService {
   constructor(
     @InjectRepository(Subscription)
     private readonly subscriptionRepository: Repository<Subscription>,
+    @InjectRepository(Seller)
+    private readonly sellerRepository: Repository<Seller>,
   ) {}
 
   async create(input: CreateSubscriptionInput): Promise<Subscription> {
-    const subscription = this.subscriptionRepository.create(input);
+    const seller = await this.sellerRepository.findOne({ where: { id: input.sellerId } });
+    if (!seller) {
+      throw new NotFoundException(`Seller with ID ${input.sellerId} not found`);
+    }
+
+    const subscription = this.subscriptionRepository.create({
+      ...input,
+      seller,
+      startDate: new Date(input.startDate),
+      endDate: new Date(input.endDate),
+    });
     return this.subscriptionRepository.save(subscription);
   }
 

@@ -36,7 +36,15 @@ let CartsService = class CartsService {
         if (!customer)
             throw new common_1.NotFoundException('Customer not found');
         const cart = this.cartRepo.create({ customer });
-        return this.cartRepo.save(cart);
+        const savedCart = await this.cartRepo.save(cart);
+        const cartWithRelations = await this.cartRepo.findOne({
+            where: { id: savedCart.id },
+            relations: ['customer', 'items'],
+        });
+        if (!cartWithRelations) {
+            throw new common_1.NotFoundException('Failed to load created cart');
+        }
+        return cartWithRelations;
     }
     async addItem(input) {
         const cart = await this.cartRepo.findOne({ where: { id: input.cartId } });
@@ -73,7 +81,7 @@ let CartsService = class CartsService {
     async findCartByCustomer(customerId) {
         return this.cartRepo.findOne({
             where: { customer: { id: customerId } },
-            relations: ['items', 'items.product'],
+            relations: ['customer', 'items', 'items.product'],
         });
     }
 };

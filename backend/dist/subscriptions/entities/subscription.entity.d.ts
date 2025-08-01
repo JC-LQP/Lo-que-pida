@@ -14,7 +14,7 @@ export declare enum PaidStatus {
 }
 export declare class Subscription {
     id: string;
-    seller: Seller;
+    seller?: Seller;
     plan: SubscriptionPlan;
     billingCycle: BillingCycle;
     status: PaidStatus;

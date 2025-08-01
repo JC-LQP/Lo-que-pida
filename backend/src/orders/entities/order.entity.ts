@@ -6,12 +6,15 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  OneToOne,
   CreateDateColumn,
   UpdateDateColumn,
   JoinColumn,
 } from 'typeorm';
 import { Customer } from '../../customers/entities/customer.entity';
 import { OrderItem } from './order-item.entity';
+import { Payment } from '../../payments/entities/payment.entity';
+import { ShippingInfo } from '../../shipping-info/entities/shipping-info.entity';
 
 export enum OrderStatus {
   PENDING = 'pending',
@@ -32,14 +35,22 @@ export class Order {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Field(() => Customer)
-  @ManyToOne(() => Customer, { eager: true })
+  @Field(() => Customer, { nullable: true })
+  @ManyToOne(() => Customer)
   @JoinColumn({ name: 'customer_id' })
-  customer: Customer;
+  customer?: Customer;
 
   @Field(() => [OrderItem])
   @OneToMany(() => OrderItem, (item) => item.order)
   items: OrderItem[];
+
+  @Field(() => Payment, { nullable: true })
+  @OneToOne(() => Payment, (payment) => payment.order)
+  payment?: Payment;
+
+  @Field(() => ShippingInfo, { nullable: true })
+  @OneToOne(() => ShippingInfo, (shippingInfo) => shippingInfo.order)
+  shippingInfo?: ShippingInfo;
 
   @Field(() => OrderStatus)
   @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.PENDING })

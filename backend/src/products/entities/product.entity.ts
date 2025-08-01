@@ -38,9 +38,9 @@ export class Product {
   @Column({ type: 'enum', enum: ProductCondition })
   condition: ProductCondition;
 
-  @Field(() => Seller)
+  @Field(() => Seller, { nullable: true })
   @ManyToOne(() => Seller, (seller) => seller.products)
-  seller: Seller;
+  seller?: Seller;
 
   @Field(() => [ProductReview], { nullable: true })
   @OneToMany(() => ProductReview, (review) => review.product)

@@ -14,6 +14,8 @@ const graphql_1 = require("@nestjs/graphql");
 const typeorm_1 = require("typeorm");
 const customer_entity_1 = require("../../customers/entities/customer.entity");
 const order_item_entity_1 = require("./order-item.entity");
+const payment_entity_1 = require("../../payments/entities/payment.entity");
+const shipping_info_entity_1 = require("../../shipping-info/entities/shipping-info.entity");
 var OrderStatus;
 (function (OrderStatus) {
     OrderStatus["PENDING"] = "pending";
@@ -29,6 +31,8 @@ let Order = class Order {
     id;
     customer;
     items;
+    payment;
+    shippingInfo;
     status;
     total;
     createdAt;
@@ -41,8 +45,8 @@ __decorate([
     __metadata("design:type", String)
 ], Order.prototype, "id", void 0);
 __decorate([
-    (0, graphql_1.Field)(() => customer_entity_1.Customer),
-    (0, typeorm_1.ManyToOne)(() => customer_entity_1.Customer, { eager: true }),
+    (0, graphql_1.Field)(() => customer_entity_1.Customer, { nullable: true }),
+    (0, typeorm_1.ManyToOne)(() => customer_entity_1.Customer),
     (0, typeorm_1.JoinColumn)({ name: 'customer_id' }),
     __metadata("design:type", customer_entity_1.Customer)
 ], Order.prototype, "customer", void 0);
@@ -51,6 +55,16 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => order_item_entity_1.OrderItem, (item) => item.order),
     __metadata("design:type", Array)
 ], Order.prototype, "items", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => payment_entity_1.Payment, { nullable: true }),
+    (0, typeorm_1.OneToOne)(() => payment_entity_1.Payment, (payment) => payment.order),
+    __metadata("design:type", payment_entity_1.Payment)
+], Order.prototype, "payment", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => shipping_info_entity_1.ShippingInfo, { nullable: true }),
+    (0, typeorm_1.OneToOne)(() => shipping_info_entity_1.ShippingInfo, (shippingInfo) => shippingInfo.order),
+    __metadata("design:type", shipping_info_entity_1.ShippingInfo)
+], Order.prototype, "shippingInfo", void 0);
 __decorate([
     (0, graphql_1.Field)(() => OrderStatus),
     (0, typeorm_1.Column)({ type: 'enum', enum: OrderStatus, default: OrderStatus.PENDING }),

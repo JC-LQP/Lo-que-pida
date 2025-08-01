@@ -9,7 +9,7 @@ export declare class Product {
     description?: string;
     price: number;
     condition: ProductCondition;
-    seller: Seller;
+    seller?: Seller;
     reviews?: ProductReview[];
     inventory?: Inventory;
     orderItems?: OrderItem[];

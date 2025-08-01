@@ -30,7 +30,19 @@ export class CartsService {
     if (!customer) throw new NotFoundException('Customer not found');
 
     const cart = this.cartRepo.create({ customer });
-    return this.cartRepo.save(cart);
+    const savedCart = await this.cartRepo.save(cart);
+    
+    // Return the cart with customer relationship loaded
+    const cartWithRelations = await this.cartRepo.findOne({
+      where: { id: savedCart.id },
+      relations: ['customer', 'items'],
+    });
+    
+    if (!cartWithRelations) {
+      throw new NotFoundException('Failed to load created cart');
+    }
+    
+    return cartWithRelations;
   }
 
   async addItem(input: AddItemToCartInput): Promise<CartItem> {
@@ -74,7 +86,7 @@ export class CartsService {
   async findCartByCustomer(customerId: string): Promise<Cart | null> {
     return this.cartRepo.findOne({
       where: { customer: { id: customerId } },
-      relations: ['items', 'items.product'],
+      relations: ['customer', 'items', 'items.product'],
     });
   }
 }

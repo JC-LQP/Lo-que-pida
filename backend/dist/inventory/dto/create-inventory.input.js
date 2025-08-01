@@ -21,8 +21,9 @@ let CreateInventoryInput = class CreateInventoryInput {
 };
 exports.CreateInventoryInput = CreateInventoryInput;
 __decorate([
-    (0, graphql_1.Field)(() => String),
+    (0, graphql_1.Field)(() => String, { nullable: true }),
     (0, class_validator_1.IsUUID)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateInventoryInput.prototype, "productId", void 0);
 __decorate([

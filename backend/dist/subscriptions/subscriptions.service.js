@@ -17,13 +17,25 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const subscription_entity_1 = require("./entities/subscription.entity");
+const seller_entity_1 = require("../sellers/entities/seller.entity");
 let SubscriptionsService = class SubscriptionsService {
     subscriptionRepository;
-    constructor(subscriptionRepository) {
+    sellerRepository;
+    constructor(subscriptionRepository, sellerRepository) {
         this.subscriptionRepository = subscriptionRepository;
+        this.sellerRepository = sellerRepository;
     }
     async create(input) {
-        const subscription = this.subscriptionRepository.create(input);
+        const seller = await this.sellerRepository.findOne({ where: { id: input.sellerId } });
+        if (!seller) {
+            throw new common_1.NotFoundException(`Seller with ID ${input.sellerId} not found`);
+        }
+        const subscription = this.subscriptionRepository.create({
+            ...input,
+            seller,
+            startDate: new Date(input.startDate),
+            endDate: new Date(input.endDate),
+        });
         return this.subscriptionRepository.save(subscription);
     }
     findAll() {
@@ -53,6 +65,8 @@ exports.SubscriptionsService = SubscriptionsService;
 exports.SubscriptionsService = SubscriptionsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(subscription_entity_1.Subscription)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(seller_entity_1.Seller)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], SubscriptionsService);
 //# sourceMappingURL=subscriptions.service.js.map

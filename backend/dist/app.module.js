@@ -28,6 +28,7 @@ const auth_module_1 = require("./auth/auth.module");
 const firebase_module_1 = require("./firebase/firebase.module");
 const inventory_module_1 = require("./inventory/inventory.module");
 const categories_module_1 = require("./categories/categories.module");
+const shipping_info_module_1 = require("./shipping-info/shipping-info.module");
 console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
 let AppModule = class AppModule {
 };
@@ -71,6 +72,7 @@ exports.AppModule = AppModule = __decorate([
             auth_module_1.AuthModule,
             inventory_module_1.InventoryModule,
             categories_module_1.CategoriesModule,
+            shipping_info_module_1.ShippingInfoModule,
         ],
     })
 ], AppModule);

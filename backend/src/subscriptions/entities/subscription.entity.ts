@@ -37,9 +37,9 @@ export class Subscription {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Field(() => Seller)
-  @ManyToOne(() => Seller, (seller) => seller.subscription, { onDelete: 'CASCADE' })
-  seller: Seller;
+  @Field(() => Seller, { nullable: true })
+  @ManyToOne(() => Seller, (seller) => seller.subscription, { onDelete: 'CASCADE', nullable: true })
+  seller?: Seller;
 
   @Field(() => SubscriptionPlan)
   @Column({ type: 'enum', enum: SubscriptionPlan })

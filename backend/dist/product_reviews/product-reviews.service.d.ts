@@ -2,9 +2,13 @@ import { Repository } from 'typeorm';
 import { ProductReview } from './entities/product-review.entity';
 import { CreateProductReviewInput } from './dto/create-product-review.input';
 import { UpdateProductReviewInput } from './dto/update-product-review.input';
+import { User } from '../users/entities/user.entity';
+import { Product } from '../products/entities/product.entity';
 export declare class ProductReviewsService {
     private reviewRepo;
-    constructor(reviewRepo: Repository<ProductReview>);
+    private userRepo;
+    private productRepo;
+    constructor(reviewRepo: Repository<ProductReview>, userRepo: Repository<User>, productRepo: Repository<Product>);
     create(input: CreateProductReviewInput): Promise<ProductReview>;
     findAll(): Promise<ProductReview[]>;
     findOne(id: string): Promise<ProductReview>;

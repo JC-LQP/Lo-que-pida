@@ -80,7 +80,7 @@ input CreateCustomerInput {
 
 input CreateInventoryInput {
   categoryId: String!
-  productId: String!
+  productId: String
   reservedStock: Int! = 0
   soldStock: Int! = 0
   stock: Int!
@@ -88,8 +88,8 @@ input CreateInventoryInput {
 
 input CreateOrderInput {
   customerId: String!
-  paymentId: String!
-  shippingInfoId: String!
+  paymentId: String
+  shippingInfoId: String
   status: OrderStatus! = PENDING
   total: Float!
 }
@@ -122,6 +122,15 @@ input CreateSellerInput {
   storeName: String!
   subscriptionId: String
   userId: String!
+}
+
+input CreateShippingInfoInput {
+  addressId: String!
+  carrierName: String
+  estimatedDeliveryDate: DateTime
+  orderId: String!
+  shippingMethod: String!
+  trackingNumber: String
 }
 
 input CreateSubscriptionInput {
@@ -181,6 +190,7 @@ type Mutation {
   createProduct(createProductInput: CreateProductInput!): Product!
   createProductReview(input: CreateProductReviewInput!): ProductReview!
   createSeller(input: CreateSellerInput!): Seller!
+  createShippingInfo(input: CreateShippingInfoInput!): ShippingInfo!
   createSubscription(input: CreateSubscriptionInput!): Subscription!
   createUser(createUserInput: CreateUserInput!): User!
   createWarehouse(createWarehouseInput: CreateWarehouseInput!): Warehouse!
@@ -193,6 +203,7 @@ type Mutation {
   removeProduct(id: String!): Product!
   removeProductReview(id: String!): ProductReview!
   removeSeller(id: String!): Seller!
+  removeShippingInfo(id: String!): ShippingInfo!
   removeSubscription(id: String!): Subscription!
   removeUser(id: String!): User!
   removeWarehouse(id: String!): Warehouse!
@@ -206,6 +217,7 @@ type Mutation {
   updateProduct(id: String!, updateProductInput: UpdateProductInput!): Product!
   updateProductReview(input: UpdateProductReviewInput!): ProductReview!
   updateSeller(input: UpdateSellerInput!): Seller!
+  updateShippingInfo(input: UpdateShippingInfoInput!): ShippingInfo!
   updateSubscription(input: UpdateSubscriptionInput!): Subscription!
   updateUser(updateUserInput: UpdateUserInput!): User!
   updateWarehouse(updateWarehouseInput: UpdateWarehouseInput!): Warehouse!
@@ -213,9 +225,11 @@ type Mutation {
 
 type Order {
   createdAt: DateTime!
-  customer: Customer!
+  customer: Customer
   id: ID!
   items: [OrderItem!]!
+  payment: Payment
+  shippingInfo: ShippingInfo
   status: OrderStatus!
   total: Float!
   updatedAt: DateTime!
@@ -274,7 +288,7 @@ type Product {
   orderItems: [OrderItem!]
   price: Float!
   reviews: [ProductReview!]
-  seller: Seller!
+  seller: Seller
   updatedAt: DateTime!
 }
 
@@ -313,6 +327,8 @@ type Query {
   products: [Product!]!
   seller(id: String!): Seller!
   sellers: [Seller!]!
+  shippingInfo(id: String!): ShippingInfo!
+  shippingInfos: [ShippingInfo!]!
   subscription(id: String!): Subscription!
   subscriptions: [Subscription!]!
   user(id: String!): User!
@@ -340,13 +356,23 @@ enum SellerStatus {
   INACTIVE
 }
 
+type ShippingInfo {
+  address: Address
+  carrierName: String
+  estimatedDeliveryDate: DateTime
+  id: ID!
+  order: Order
+  shippingMethod: String!
+  trackingNumber: String
+}
+
 type Subscription {
   billingCycle: BillingCycle!
   createdAt: DateTime!
   endDate: DateTime!
   id: ID!
   plan: SubscriptionPlan!
-  seller: Seller!
+  seller: Seller
   startDate: DateTime!
   status: PaidStatus!
 }
@@ -428,6 +454,16 @@ input UpdateSellerInput {
   storeName: String
   subscriptionId: String
   userId: String
+}
+
+input UpdateShippingInfoInput {
+  addressId: String
+  carrierName: String
+  estimatedDeliveryDate: DateTime
+  id: String!
+  orderId: String
+  shippingMethod: String
+  trackingNumber: String
 }
 
 input UpdateSubscriptionInput {

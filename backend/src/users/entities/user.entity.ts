@@ -46,4 +46,5 @@ export class User {
   @Field({ nullable: true })
   @Column({ name: 'profile_image', type: 'text', nullable: true })
   profileImage?: string;
+
 }

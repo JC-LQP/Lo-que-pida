@@ -17,13 +17,32 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const warehouse_entity_1 = require("./entities/warehouse.entity");
+const seller_entity_1 = require("../sellers/entities/seller.entity");
+const address_entity_1 = require("../addresses/entities/address.entity");
 let WarehouseService = class WarehouseService {
     warehouseRepository;
-    constructor(warehouseRepository) {
+    sellerRepository;
+    addressRepository;
+    constructor(warehouseRepository, sellerRepository, addressRepository) {
         this.warehouseRepository = warehouseRepository;
+        this.sellerRepository = sellerRepository;
+        this.addressRepository = addressRepository;
     }
-    create(input) {
-        return this.warehouseRepository.save(input);
+    async create(input) {
+        const seller = await this.sellerRepository.findOne({ where: { id: input.sellerId } });
+        if (!seller) {
+            throw new common_1.NotFoundException(`Seller with ID ${input.sellerId} not found`);
+        }
+        const address = await this.addressRepository.findOne({ where: { id: input.addressId } });
+        if (!address) {
+            throw new common_1.NotFoundException(`Address with ID ${input.addressId} not found`);
+        }
+        const warehouse = this.warehouseRepository.create({
+            ...input,
+            seller,
+            address,
+        });
+        return this.warehouseRepository.save(warehouse);
     }
     findAll() {
         return this.warehouseRepository.find({
@@ -53,6 +72,10 @@ exports.WarehouseService = WarehouseService;
 exports.WarehouseService = WarehouseService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(warehouse_entity_1.Warehouse)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(seller_entity_1.Seller)),
+    __param(2, (0, typeorm_1.InjectRepository)(address_entity_1.Address)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
+        typeorm_2.Repository])
 ], WarehouseService);
 //# sourceMappingURL=warehouse.service.js.map
