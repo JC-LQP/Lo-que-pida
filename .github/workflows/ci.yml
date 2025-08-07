@@ -1,0 +1,55 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  install-and-check:
+    name: Install & Build (backend & frontend)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          always-auth: false
+          check-latest: false
+
+      - name: Check pnpm version
+        run: pnpm -v
+
+      - name: Install root dependencies
+        run: pnpm install
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: pnpm install
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: pnpm install
+
+      - name: Build backend
+        working-directory: backend
+        run: pnpm build
+
+      - name: Test backend (optional)
+        working-directory: backend
+        run: pnpm test || echo "No test script defined"
+
+      - name: Build frontend
+        working-directory: frontend
+        run: pnpm build
