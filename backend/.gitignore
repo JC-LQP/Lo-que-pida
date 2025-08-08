@@ -100,3 +100,5 @@ src/generated/
 
 # Sentry
 .sentryclirc
+
+/generated/prisma

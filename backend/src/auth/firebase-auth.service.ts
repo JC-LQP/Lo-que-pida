@@ -69,7 +69,7 @@ export class FirebaseAuthService {
         user.role = decodedToken.role;
       } else {
         // Default role assignment logic
-        user.role = 'customer';
+        user.role = 'CUSTOMER';
       }
 
       this.logger.log(`User authenticated: ${user.uid}`);

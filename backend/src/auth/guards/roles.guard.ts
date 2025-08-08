@@ -9,9 +9,9 @@ import { Reflector } from '@nestjs/core';
 import { FirebaseUser } from '../firebase-auth.service';
 
 export enum UserRole {
-  CUSTOMER = 'customer',
-  SELLER = 'seller',
-  ADMIN = 'admin',
+  CUSTOMER = 'CUSTOMER',
+  SELLER = 'SELLER',
+  ADMIN = 'ADMIN',
 }
 
 @Injectable()
