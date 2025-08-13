@@ -12,9 +12,9 @@ export default function Home() {
         </p>
         <div className="bg-white/10 backdrop-blur-lg rounded-lg p-6 border border-white/20">
           <p className="text-sm opacity-70">
-            ✅ Componentes anteriores eliminados<br/>
-            ✅ Estructura limpia<br/>
-            ✅ Lista para desarrollo dinámico
+            Componentes anteriores eliminados<br/>
+            Estructura limpia<br/>
+            Lista para desarrollo dinámico
           </p>
         </div>
       </div>

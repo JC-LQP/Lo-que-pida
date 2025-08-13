@@ -44,7 +44,7 @@ export interface Product {
   stock: number;
   condition: ProductCondition;
   tags: string[];
-  specifications: Record<string, any>;
+  specifications: Record<string, unknown>;
   rating: number;
   reviewCount: number;
   isAvailable: boolean;
@@ -64,7 +64,7 @@ export interface ProductRequest {
   location: Location;
   urgency: UrgencyLevel;
   tags: string[];
-  specifications?: Record<string, any>;
+  specifications?: Record<string, unknown>;
   status: RequestStatus;
   responses: ProductResponse[];
   createdAt: string;
@@ -181,7 +181,7 @@ export interface PaymentMethod {
   id: string;
   type: 'card' | 'paypal' | 'bank_transfer' | 'cash';
   name: string;
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   isDefault: boolean;
 }
 
@@ -250,7 +250,7 @@ export interface Notification {
   title: string;
   message: string;
   type: NotificationType;
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
   isRead: boolean;
   createdAt: string;
 }
@@ -279,7 +279,7 @@ export interface PaginationInfo {
   hasPrev: boolean;
 }
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   message?: string;
