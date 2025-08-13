@@ -3,20 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "lint": "next lint",
     "test": "jest"
   },
   "dependencies": {
     "@apollo/client": "^3.13.9",
+    "@headlessui/react": "^2.2.7",
     "@supabase/supabase-js": "^2.39.0",
+    "axios": "^1.11.0",
     "firebase": "^10.7.1",
+    "framer-motion": "^12.23.12",
     "graphql": "^16.11.0",
+    "lucide-react": "^0.539.0",
     "next": "15.4.5",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-icons": "^5.5.0",
+    "react-intersection-observer": "^9.16.0",
+    "react-loading-skeleton": "^3.5.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
