@@ -18,7 +18,7 @@ export interface BackendProduct {
   brand: string | null;
   model: string | null;
   weight: string | null;
-  dimensions: Record<string, any> | null;
+  dimensions: Record<string, unknown> | null;
   images: string[];
   tags: string[];
   metaTitle: string | null;
@@ -174,8 +174,8 @@ class ApiService {
   }
 
   // Categories API (when you need it)
-  async getCategories(): Promise<BackendApiResponse<any[]>> {
-    return this.request<BackendApiResponse<any[]>>('/api/categories');
+  async getCategories(): Promise<BackendApiResponse<unknown[]>> {
+    return this.request<BackendApiResponse<unknown[]>>('/api/categories');
   }
 
   // Health check

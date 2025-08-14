@@ -4,7 +4,7 @@ import { useFeaturedProducts } from '../features/products/hooks/useProducts';
 
 const Home = () => {
   // Use the custom hook for featured products
-  const { products, loading, error, refetch } = useFeaturedProducts(20);
+  const { products, loading, error } = useFeaturedProducts(20);
 
   if (loading) {
     return (
