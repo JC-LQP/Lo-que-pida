@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 interface ProductCardProps {
   product: {
     id: string;
@@ -13,11 +15,15 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <div className="bg-white/40 backdrop-blur-md rounded-lg shadow-md hover:shadow-xl transition-shadow overflow-hidden">
-      <img
-        src={product.image}
-        alt={product.name}
-        className="w-full h-48 object-cover"
-      />
+      <div className="relative w-full h-48">
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+      </div>
       <div className="p-4">
         {product.is_featured && (
           <span className="text-green-600 font-bold text-sm mb-1 inline-block">

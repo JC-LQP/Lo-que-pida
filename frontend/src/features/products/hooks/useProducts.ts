@@ -1,5 +1,36 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { productsService } from '../services/productsService';
+
+// Product type (you can make this more specific based on your transformed product structure)
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  compare_price?: number | null;
+  description: string;
+  image: string;
+  is_featured: boolean;
+  brand?: string | null;
+  model?: string | null;
+  slug: string;
+  stock?: number;
+  isInStock?: boolean;
+  isOnSale?: boolean;
+  discountPercentage?: number;
+  category?: {
+    id: string;
+    name: string;
+    description: string;
+  };
+  seller?: {
+    id: string;
+    businessName: string;
+    user: {
+      displayName: string;
+      email: string;
+    };
+  };
+}
 
 // Types for the hook
 interface UseProductsOptions {
@@ -14,7 +45,7 @@ interface UseProductsOptions {
 }
 
 interface UseProductsReturn {
-  products: any[];
+  products: Product[];
   loading: boolean;
   error: string | null;
   pagination: {
@@ -29,7 +60,7 @@ interface UseProductsReturn {
 
 // Main products hook
 export function useProducts(options: UseProductsOptions = {}): UseProductsReturn {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pagination, setPagination] = useState<{
@@ -39,7 +70,7 @@ export function useProducts(options: UseProductsOptions = {}): UseProductsReturn
     totalPages: number;
   } | null>(null);
 
-  const fetchProducts = async (fetchOptions: UseProductsOptions = {}) => {
+  const fetchProducts = useCallback(async (fetchOptions: UseProductsOptions = {}) => {
     const combinedOptions = { ...options, ...fetchOptions };
     
     setLoading(true);
@@ -69,16 +100,16 @@ export function useProducts(options: UseProductsOptions = {}): UseProductsReturn
     } finally {
       setLoading(false);
     }
-  };
+  }, [options]);
 
-  const refetch = () => fetchProducts();
+  const refetch = useCallback(() => fetchProducts(), [fetchProducts]);
 
   // Auto-fetch on mount if enabled
   useEffect(() => {
     if (options.autoFetch !== false) {
       fetchProducts();
     }
-  }, [options.page, options.categoryId, options.search, options.isFeatured, options.sortBy, options.sortOrder]);
+  }, [fetchProducts, options.autoFetch]);
 
   return {
     products,
@@ -92,11 +123,11 @@ export function useProducts(options: UseProductsOptions = {}): UseProductsReturn
 
 // Hook specifically for featured products
 export function useFeaturedProducts(limit: number = 12) {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchFeaturedProducts = async () => {
+  const fetchFeaturedProducts = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -115,11 +146,11 @@ export function useFeaturedProducts(limit: number = 12) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [limit]);
 
   useEffect(() => {
     fetchFeaturedProducts();
-  }, [limit]);
+  }, [fetchFeaturedProducts]);
 
   return {
     products,
@@ -131,11 +162,11 @@ export function useFeaturedProducts(limit: number = 12) {
 
 // Hook for single product
 export function useProduct(id: string | null) {
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchProduct = async () => {
+  const fetchProduct = useCallback(async () => {
     if (!id) return;
     
     setLoading(true);
@@ -156,11 +187,11 @@ export function useProduct(id: string | null) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     fetchProduct();
-  }, [id]);
+  }, [fetchProduct]);
 
   return {
     product,
@@ -172,11 +203,11 @@ export function useProduct(id: string | null) {
 
 // Hook for product by slug
 export function useProductBySlug(slug: string | null) {
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchProductBySlug = async () => {
+  const fetchProductBySlug = useCallback(async () => {
     if (!slug) return;
     
     setLoading(true);
@@ -197,11 +228,11 @@ export function useProductBySlug(slug: string | null) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [slug]);
 
   useEffect(() => {
     fetchProductBySlug();
-  }, [slug]);
+  }, [fetchProductBySlug]);
 
   return {
     product,
