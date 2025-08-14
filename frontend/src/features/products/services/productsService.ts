@@ -1,4 +1,4 @@
-import { apiService, BackendProduct, ProductsResponse, transformBackendProductToFrontend } from '../../../lib/api';
+import { apiService, transformBackendProductToFrontend } from '../../../lib/api';
 
 // Service specifically for products with additional business logic
 export class ProductsService {
