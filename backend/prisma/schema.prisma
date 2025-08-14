@@ -1,6 +1,6 @@
 // LoQuePida - Prisma Schema (EXACT match with Supabase database)
 // Updated to reflect the REAL structure shown in Supabase schema visualizer
-
+// All the enums are provided
 generator client {
   provider = "prisma-client-js"
 }
