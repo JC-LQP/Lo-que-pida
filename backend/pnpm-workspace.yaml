@@ -1,0 +1,9 @@
+onlyBuiltDependencies:
+  - '@compodoc/compodoc'
+  - '@firebase/util'
+  - '@nestjs/core'
+  - '@prisma/client'
+  - '@prisma/engines'
+  - '@swc/core'
+  - prisma
+  - protobufjs
