@@ -265,7 +265,7 @@ model Order {
   id                  String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   orderNumber         String    @unique @map("order_number")
   customerId          String    @map("customer_id") @db.Uuid
-  status              String    @default("PENDING") // USER-DEFINED enum as String
+  status              OrderStatus @default(PENDING)
   subtotal            Decimal   @db.Decimal(10, 2)
   shippingCost        Decimal   @default(0) @map("shipping_cost") @db.Decimal(10, 2)
   taxAmount           Decimal   @default(0) @map("tax_amount") @db.Decimal(10, 2)
@@ -309,8 +309,8 @@ model OrderItem {
 model Payment {
   id               String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   orderId          String    @map("order_id") @db.Uuid
-  provider         String    // USER-DEFINED enum as String
-  status           String    @default("PENDING") // USER-DEFINED enum as String
+  provider         PaymentProvider
+  status           PaymentStatus @default(PENDING)
   amount           Decimal   @db.Decimal(10, 2)
   currency         String    @default("USD")
   transactionId    String?   @map("transaction_id")
@@ -349,9 +349,9 @@ model ProductReview {
 model Subscription {
   id               String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   sellerId         String    @map("seller_id") @db.Uuid
-  plan             String    // USER-DEFINED enum as String
-  billingCycle     String    @map("billingCycle") // USER-DEFINED enum as String
-  status           String    @default("UNPAID") // USER-DEFINED enum as String
+  plan             SubscriptionPlan
+  billingCycle     BillingCycle @map("billing_cycle")
+  status           SubscriptionStatus @default(UNPAID)
   price            Decimal   @db.Decimal(10, 2)
   startDate        DateTime  @map("start_date") @db.Date
   endDate          DateTime  @map("end_date") @db.Date
