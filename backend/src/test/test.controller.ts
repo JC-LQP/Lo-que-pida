@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { SupabaseService } from '../supabase/supabase.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { UserRole, SellerStatus, ProductCondition, OrderStatus, PaymentStatus } from '@prisma/client';
+import { UserRole, SellerStatus, ProductCondition, OrderStatus, PaymentStatus, SubscriptionStatus } from '@prisma/client';
 
 interface TestUser {
   name: string;
@@ -1948,7 +1948,7 @@ export class TestController {
         data: {
           orderNumber: `ORD-${Date.now()}`,
           customerId: createOrderDto.customerId,
-          status: 'PENDING',
+          status: OrderStatus.PENDING,
           subtotal: createOrderDto.subtotal,
           shippingCost: createOrderDto.shippingCost || 0,
           taxAmount: createOrderDto.taxAmount || 0,
@@ -2018,8 +2018,8 @@ export class TestController {
       const payment = await this.prismaService.payment.create({
         data: {
           orderId: createPaymentDto.orderId,
-          provider: createPaymentDto.provider,
-          status: 'PENDING',
+          provider: createPaymentDto.provider as any,
+          status: PaymentStatus.PENDING,
           amount: createPaymentDto.amount,
           currency: createPaymentDto.currency || 'USD',
           transactionId: createPaymentDto.transactionId
@@ -2051,9 +2051,9 @@ export class TestController {
       const subscription = await this.prismaService.subscription.create({
         data: {
           sellerId: createSubscriptionDto.sellerId,
-          plan: createSubscriptionDto.plan,
-          billingCycle: createSubscriptionDto.billingCycle,
-          status: 'UNPAID',
+          plan: createSubscriptionDto.plan as any,
+          billingCycle: createSubscriptionDto.billingCycle as any,
+          status: SubscriptionStatus.UNPAID,
           price: createSubscriptionDto.price,
           startDate: new Date(createSubscriptionDto.startDate),
           endDate: new Date(createSubscriptionDto.endDate),

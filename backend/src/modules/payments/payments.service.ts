@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreatePaymentDto, UpdatePaymentDto } from '../../common/dto/payments/payment.dto';
-import { PaymentStatus } from '@prisma/client';
+import { PaymentStatus, OrderStatus } from '@prisma/client';
 
 @Injectable()
 export class PaymentsService {
@@ -154,7 +154,7 @@ export class PaymentsService {
         where: { id },
         data: {
           ...updatePaymentDto,
-          paidAt: (updatePaymentDto.status as any) === 'PAID' ? new Date() : existingPayment.paidAt,
+          paidAt: updatePaymentDto.status === PaymentStatus.PAID ? new Date() : existingPayment.paidAt,
         },
         include: {
           order: {
@@ -192,7 +192,7 @@ export class PaymentsService {
       throw new NotFoundException(`Payment with ID ${id} not found`);
     }
 
-    if (payment.status === 'PAID') {
+    if (payment.status === PaymentStatus.PAID) {
       throw new BadRequestException('Payment is already processed');
     }
 
@@ -200,7 +200,7 @@ export class PaymentsService {
       const updatedPayment = await this.prisma.payment.update({
         where: { id },
         data: {
-          status: 'PAID',
+          status: PaymentStatus.PAID,
           transactionId,
           providerResponse: providerResponse || null,
           paidAt: new Date(),
@@ -211,7 +211,7 @@ export class PaymentsService {
       await this.prisma.order.update({
         where: { id: payment.orderId },
         data: {
-          status: 'PROCESSING',
+          status: OrderStatus.PROCESSING,
         },
       });
 
@@ -234,7 +234,7 @@ export class PaymentsService {
       const updatedPayment = await this.prisma.payment.update({
         where: { id },
         data: {
-          status: 'FAILED',
+          status: PaymentStatus.FAILED,
           failureReason,
         },
       });
@@ -255,11 +255,11 @@ export class PaymentsService {
       recentPayments,
     ] = await Promise.all([
       this.prisma.payment.count(),
-      this.prisma.payment.count({ where: { status: 'PAID' } }),
-      this.prisma.payment.count({ where: { status: 'PENDING' } }),
-      this.prisma.payment.count({ where: { status: 'FAILED' } }),
+      this.prisma.payment.count({ where: { status: PaymentStatus.PAID } }),
+      this.prisma.payment.count({ where: { status: PaymentStatus.PENDING } }),
+      this.prisma.payment.count({ where: { status: PaymentStatus.FAILED } }),
       this.prisma.payment.aggregate({
-        where: { status: 'PAID' },
+        where: { status: PaymentStatus.PAID },
         _sum: { amount: true },
       }),
       this.prisma.payment.count({
@@ -276,7 +276,7 @@ export class PaymentsService {
       paidPayments,
       pendingPayments,
       failedPayments,
-      totalRevenue: totalRevenue._sum.amount?.toNumber() || 0,
+      totalRevenue: totalRevenue._sum?.amount?.toNumber() || 0,
       recentPayments,
       successRate: totalPayments > 0 ? ((paidPayments / totalPayments) * 100).toFixed(1) : '0',
       failureRate: totalPayments > 0 ? ((failedPayments / totalPayments) * 100).toFixed(1) : '0',
@@ -288,9 +288,9 @@ export class PaymentsService {
       ...payment,
       amount: payment.amount?.toNumber(),
       formattedAmount: `${payment.currency || 'USD'} ${payment.amount?.toNumber() || 0}`,
-      isPaid: payment.status === 'PAID',
-      isPending: payment.status === 'PENDING',
-      isFailed: payment.status === 'FAILED',
+      isPaid: payment.status === PaymentStatus.PAID,
+      isPending: payment.status === PaymentStatus.PENDING,
+      isFailed: payment.status === PaymentStatus.FAILED,
       daysSincePaid: payment.paidAt 
         ? Math.floor((Date.now() - new Date(payment.paidAt).getTime()) / (1000 * 60 * 60 * 24))
         : null,

@@ -74,6 +74,9 @@ enum SubscriptionPlan {
 }
 
 enum SubscriptionStatus {
+  ACTIVE
+  PAUSED
+  CANCELLED
   PAID
   UNPAID
 

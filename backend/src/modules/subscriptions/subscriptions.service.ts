@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateSubscriptionDto, UpdateSubscriptionDto } from '../../common/dto/subscriptions/subscription.dto';
+import { SubscriptionStatus, BillingCycle } from '@prisma/client';
 
 @Injectable()
 export class SubscriptionsService {
@@ -21,7 +22,7 @@ export class SubscriptionsService {
       const existingSubscription = await this.prisma.subscription.findFirst({
         where: {
           sellerId: createSubscriptionDto.customerId,
-          status: 'ACTIVE',
+          status: SubscriptionStatus.ACTIVE,
         },
       });
 
@@ -185,7 +186,7 @@ export class SubscriptionsService {
       if (updateSubscriptionDto.endDate) updateData.endDate = new Date(updateSubscriptionDto.endDate);
 
       // Recalculate next billing date if billing cycle changed
-      if (updateSubscriptionDto.billingCycle && updateSubscriptionDto.billingCycle !== existingSubscription.billingCycle) {
+      if (updateSubscriptionDto.billingCycle && (updateSubscriptionDto.billingCycle as BillingCycle) !== existingSubscription.billingCycle) {
         updateData.nextBillingDate = this.calculateNextBillingDate(
           updateSubscriptionDto.billingCycle as any,
           existingSubscription.nextBillingDate || new Date()
@@ -224,7 +225,7 @@ export class SubscriptionsService {
       throw new NotFoundException(`Subscription with ID ${id} not found`);
     }
 
-    if (subscription.status === 'CANCELLED') {
+    if (subscription.status === SubscriptionStatus.CANCELLED) {
       throw new BadRequestException('Subscription is already cancelled');
     }
 
@@ -232,7 +233,7 @@ export class SubscriptionsService {
       const updatedSubscription = await this.prisma.subscription.update({
         where: { id },
         data: {
-          status: 'CANCELLED',
+          status: SubscriptionStatus.CANCELLED,
           // Note: cancelledAt and cancelReason fields don't exist in schema
         },
         include: {
@@ -264,7 +265,7 @@ export class SubscriptionsService {
       throw new NotFoundException(`Subscription with ID ${id} not found`);
     }
 
-    if (subscription.status !== 'ACTIVE') {
+    if (subscription.status !== SubscriptionStatus.ACTIVE) {
       throw new BadRequestException('Only active subscriptions can be paused');
     }
 
@@ -272,7 +273,7 @@ export class SubscriptionsService {
       const updatedSubscription = await this.prisma.subscription.update({
         where: { id },
         data: {
-          status: 'PAUSED',
+          status: SubscriptionStatus.PAUSED,
           // Note: pausedAt and resumeDate fields don't exist in schema
         },
       });
@@ -292,7 +293,7 @@ export class SubscriptionsService {
       throw new NotFoundException(`Subscription with ID ${id} not found`);
     }
 
-    if (subscription.status !== 'PAUSED') {
+    if (subscription.status !== SubscriptionStatus.PAUSED) {
       throw new BadRequestException('Only paused subscriptions can be resumed');
     }
 
@@ -300,7 +301,7 @@ export class SubscriptionsService {
       const updatedSubscription = await this.prisma.subscription.update({
         where: { id },
         data: {
-          status: 'ACTIVE',
+          status: SubscriptionStatus.ACTIVE,
           nextBillingDate: this.calculateNextBillingDate(
             subscription.billingCycle,
             new Date()
@@ -319,7 +320,7 @@ export class SubscriptionsService {
     
     const subscriptions = await this.prisma.subscription.findMany({
       where: {
-        status: 'ACTIVE',
+        status: SubscriptionStatus.ACTIVE,
         nextBillingDate: {
           lte: now,
         },
@@ -351,11 +352,11 @@ export class SubscriptionsService {
       recentSubscriptions,
     ] = await Promise.all([
       this.prisma.subscription.count(),
-      this.prisma.subscription.count({ where: { status: 'ACTIVE' } }),
-      this.prisma.subscription.count({ where: { status: 'PAUSED' } }),
-      this.prisma.subscription.count({ where: { status: 'CANCELLED' } }),
+      this.prisma.subscription.count({ where: { status: SubscriptionStatus.ACTIVE } }),
+      this.prisma.subscription.count({ where: { status: SubscriptionStatus.PAUSED } }),
+      this.prisma.subscription.count({ where: { status: SubscriptionStatus.CANCELLED } }),
       this.prisma.subscription.aggregate({
-        where: { status: 'ACTIVE' },
+        where: { status: SubscriptionStatus.ACTIVE },
         _sum: { price: true },
       }),
       this.prisma.subscription.count({
@@ -372,7 +373,7 @@ export class SubscriptionsService {
       activeSubscriptions,
       pausedSubscriptions,
       cancelledSubscriptions,
-      monthlyRecurringRevenue: totalRevenue._sum.price?.toNumber() || 0,
+      monthlyRecurringRevenue: totalRevenue._sum?.price?.toNumber() || 0,
       recentSubscriptions,
       churnRate: totalSubscriptions > 0 
         ? ((cancelledSubscriptions / totalSubscriptions) * 100).toFixed(1)
