@@ -6,6 +6,12 @@ export class CreateCartDto {
   customerId: string;
 }
 
+export class UpdateCartDto {
+  @IsUUID()
+  @IsOptional()
+  customerId?: string;
+}
+
 export class AddToCartDto {
   @IsUUID()
   productId: string;

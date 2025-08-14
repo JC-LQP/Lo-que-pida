@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
     remotePatterns: [
       {
@@ -49,7 +48,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  
+
   async headers() {
     return [
       {
@@ -71,8 +70,7 @@ const nextConfig: NextConfig = {
       }
     ]
   },
-  
-  // Rewrite to proxy API calls to backend
+
   async rewrites() {
     return [
       {
@@ -80,7 +78,12 @@ const nextConfig: NextConfig = {
         destination: 'http://localhost:3000/api/:path*'
       }
     ]
-  }
+  },
+
+
+  allowedDevOrigins: [
+    'http://192.168.1.102:3001', 
+  ],
 };
 
 export default nextConfig;

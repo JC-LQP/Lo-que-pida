@@ -301,10 +301,13 @@ export class DatabaseExplorerController {
       
       const sampleUser = {
         email: 'test@example.com',
-        full_name: 'Test User',
-        role: 'customer',
-        is_verified: true,
-        firebase_uid: `test_${Date.now()}`
+        first_name: 'Test',
+        last_name: 'User',
+        display_name: 'Test User',
+        role: 'CUSTOMER',
+        email_verified: true,
+        firebase_uid: `test_${Date.now()}`,
+        is_active: true
       };
 
       const { data, error } = await supabase
