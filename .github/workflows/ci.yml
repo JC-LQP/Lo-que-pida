@@ -17,8 +17,6 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: latest
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -31,25 +29,12 @@ jobs:
       - name: Check pnpm version
         run: pnpm -v
 
-      - name: Install root dependencies
+      - name: Install all dependencies
         run: pnpm install
 
-      - name: Install backend dependencies
-        working-directory: backend
-        run: pnpm install
-
-      - name: Install frontend dependencies
-        working-directory: frontend
-        run: pnpm install
-
-      - name: Build backend
-        working-directory: backend
-        run: pnpm build
+      - name: Build all projects
+        run: pnpm build:all
 
       - name: Test backend (optional)
         working-directory: backend
         run: pnpm test || echo "No test script defined"
-
-      - name: Build frontend
-        working-directory: frontend
-        run: pnpm build
