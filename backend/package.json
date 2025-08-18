@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "prebuild": "prisma generate",
     "build": "nest build",
     "clean": "rimraf dist node_modules .cache",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
