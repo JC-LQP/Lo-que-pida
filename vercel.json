@@ -1,6 +1,17 @@
 {
   "buildCommand": "pnpm build",
   "outputDirectory": "frontend/.next",
-  "installCommand": "pnpm install --registry https://registry.yarnpkg.com",
-  "framework": "nextjs"
+  "installCommand": "pnpm install --registry https://registry.npmjs.org",
+  "framework": "nextjs",
+  "functions": {
+    "app/api/**/*.js": {
+      "runtime": "nodejs20.x"
+    }
+  },
+  "build": {
+    "env": {
+      "PNPM_VERSION": "9.15.0",
+      "NODE_VERSION": "20.18.0"
+    }
+  }
 }
