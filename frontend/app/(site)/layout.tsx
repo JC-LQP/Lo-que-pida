@@ -16,6 +16,9 @@ import PreviewSliderModal from "@/components/Common/PreviewSlider";
 import ScrollToTop from "@/components/Common/ScrollToTop";
 import PreLoader from "@/components/Common/PreLoader";
 
+// Efectos de IconRain
+import IconRainWrapper from "@/components/effects/IconRainWrapper";
+
 export default function RootLayout({
   children,
 }: {
@@ -48,6 +51,10 @@ export default function RootLayout({
                 </ModalProvider>
               </CartModalProvider>
             </ReduxProvider>
+            
+            {/* Efectos de fondo */}
+            <IconRainWrapper />
+            
             <ScrollToTop />
             <Footer />
           </>
