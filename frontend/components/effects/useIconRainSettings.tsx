@@ -17,7 +17,7 @@ const DEFAULT_SETTINGS: IconRainSettings = {
   enabled: true,
   maxIcons: 25,
   spawnInterval: 250,
-  iconSize: 50,
+  iconSize: 52,
   mouseIntensity: 0.3,
   opacity: 0.4,
   side: 'both',
