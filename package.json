@@ -1,13 +1,18 @@
 {
   "scripts": {
-    "build": "pnpm --filter lo-que-pida-frontend build",
-    "dev": "pnpm --recursive dev",
-    "start": "pnpm --filter lo-que-pida-frontend start",
-    "build:all": "pnpm --recursive build"
+    "build": "npm run build --prefix frontend",
+    "start": "npm start --prefix frontend",
+    "dev": "npm run dev --prefix frontend",
+    "build:pnpm": "pnpm --filter lo-que-pida-frontend build",
+    "build:all": "pnpm --recursive build",
+    "postinstall": "npm install --prefix frontend && npm install --prefix backend"
   },
   "dependencies": {
     "@apollo/client": "^3.13.9",
-    "graphql": "^16.11.0"
+    "graphql": "^16.11.0",
+    "next": "15.2.3",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.12",
