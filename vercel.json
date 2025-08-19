@@ -1,7 +1,7 @@
 {
   "buildCommand": "pnpm --filter lo-que-pida-frontend build",
   "outputDirectory": "frontend/.next",
-  "installCommand": "pnpm install --frozen-lockfile",
+  "installCommand": "pnpm install --no-frozen-lockfile",
   "framework": "nextjs",
   "build": {
     "env": {
