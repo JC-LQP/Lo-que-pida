@@ -21,7 +21,7 @@ const DEFAULT_SETTINGS: IconRainSettings = {
   mouseIntensity: 0.3,
   opacity: 0.4,
   side: 'both',
-  initialDensity: 6
+  initialDensity: 10
 };
 
 const STORAGE_KEY = 'iconrain-settings';

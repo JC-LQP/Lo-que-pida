@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import MagicEffects from "@/components/Common/MagicEffects";
 
 const CounDown = () => {
   const [days, setDays] = useState(0);
@@ -29,10 +30,20 @@ const CounDown = () => {
   return (
     <section className="overflow-hidden py-20">
       <div className="max-w-screen-2xl w-full mx-auto px-4 sm:px-8 xl:px-0">
+        {/* <!-- promo banner big --> */}
+        <MagicEffects 
+          enableParticles={true}
+          enableTilt={true}
+          enableMagnetism={true}
+          enableClickRipple={true}
+          enableGlow={true}
+          particleCount={8}
+          className="mb-7.5"
+        >
         <div className="relative overflow-hidden z-1 rounded-lg bg-[#D0E9F3] p-4 sm:p-7.5 lg:p-10 xl:p-15">
           <div className="max-w-[422px] w-full">
             <span className="block font-medium text-custom-1 text-blue mb-2.5">
-              Don’t Miss!!
+              Don't Miss!!
             </span>
 
             <h2 className="font-bold text-dark text-xl lg:text-heading-4 xl:text-heading-3 mb-3">
@@ -43,10 +54,10 @@ const CounDown = () => {
 
             {/* <!-- Countdown timer --> */}
             <div
-              className="flex flex-wrap gap-6 mt-6"
-              x-data="timer()"
-              x-init="countdown()"
-            >
+            className="flex flex-wrap gap-6 mt-6"
+            x-data="timer()"
+            x-init="countdown()"
+          >
               {/* <!-- timer day --> */}
               <div>
                 <span
@@ -127,6 +138,7 @@ const CounDown = () => {
             height={376}
           />
         </div>
+      </MagicEffects>
       </div>
     </section>
   );

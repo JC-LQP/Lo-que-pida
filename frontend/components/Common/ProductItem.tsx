@@ -49,6 +49,20 @@ const ProductItem = ({ item }: { item: Product }) => {
     <div className="group">
       <div className="relative overflow-hidden flex items-center justify-center rounded-lg bg-[#F6F7FB] min-h-[270px] mb-4">
         <Image src={item.imgs.previews[0]} alt="" width={250} height={250} />
+        
+        {/* Stock Status Badge */}
+        {item.stock && item.stock < 10 && (
+          <div className="absolute top-3 left-3 low-stock">
+            Stock bajo: {item.stock}
+          </div>
+        )}
+        
+        {/* Offer Badge */}
+        {item.price > item.discountedPrice && (
+          <div className="absolute top-3 right-3 urgent-badge">
+            -{Math.round(((item.price - item.discountedPrice) / item.price) * 100)}%
+          </div>
+        )}
 
         <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">
           <button
@@ -160,8 +174,12 @@ const ProductItem = ({ item }: { item: Product }) => {
       </h3>
 
       <span className="flex items-center gap-2 font-medium text-lg">
-        <span className="text-dark">${item.discountedPrice}</span>
-        <span className="text-dark-4 line-through">${item.price}</span>
+        <span className={item.price > item.discountedPrice ? "price-offer" : "text-dark"}>
+          ${item.discountedPrice}
+        </span>
+        {item.price > item.discountedPrice && (
+          <span className="text-dark-4 line-through">${item.price}</span>
+        )}
       </span>
     </div>
   );

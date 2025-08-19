@@ -8,7 +8,7 @@
   }
 
   body {
-    @apply font-euclid-circular-a font-normal text-base text-dark-3 relative z-1;
+    @apply font-euclid-circular-a font-normal text-base text-dark-3 dark:text-gray-300 relative z-1 bg-white dark:bg-gray-900 transition-colors duration-300;
   }
 }
 
@@ -198,4 +198,253 @@ input[type='search']::-webkit-search-results-decoration {
 
 .range-slider__range {
   @apply !bg-blue;
+}
+
+/* === Paleta Tricolor Lo Que Pida === */
+/* Gradientes suaves */
+.gradient-blue {
+  @apply bg-gradient-to-r from-blue-light-5 to-blue-light-4;
+}
+
+.gradient-offer {
+  @apply bg-gradient-to-r from-red-light-6 to-red-light-5;
+}
+
+/* Combinaciones patrióticas */
+.patriotic-border {
+  @apply border-t-4 border-blue border-r-4 border-red;
+}
+
+.flag-accent {
+  @apply bg-white border-l-4 border-blue border-r-4 border-red;
+}
+
+/* Estados interactivos */
+.interactive-blue {
+  @apply text-blue hover:text-blue-dark transition-colors duration-200;
+}
+
+.interactive-red {
+  @apply text-red hover:text-red-dark transition-colors duration-200;
+}
+
+/* Botones temáticos */
+.btn-primary {
+  @apply bg-blue text-white hover:bg-blue-dark transition-colors duration-200 px-4 py-2 rounded;
+}
+
+.btn-offer {
+  @apply bg-red text-white hover:bg-red-dark transition-colors duration-200 px-4 py-2 rounded;
+}
+
+.btn-secondary {
+  @apply border border-blue text-blue hover:bg-blue hover:text-white transition-all duration-200 px-4 py-2 rounded;
+}
+
+.btn-danger {
+  @apply bg-red-dark text-white hover:bg-red transition-colors duration-200 px-4 py-2 rounded;
+}
+
+/* Estados y feedback */
+.price-offer {
+  @apply text-red font-semibold;
+}
+
+.low-stock {
+  @apply text-red-dark bg-red-light-6 px-2 py-1 rounded text-xs;
+}
+
+.error-message {
+  @apply text-red-dark bg-red-light-5 border border-red-light-3 p-3 rounded;
+}
+
+.success-state {
+  @apply text-green bg-green-light-6 p-3 rounded;
+}
+
+/* Navegación y UI */
+.nav-link-active {
+  @apply text-blue border-b-2 border-blue;
+}
+
+.counter-badge {
+  @apply bg-blue text-white text-xs px-2 py-1 rounded-full;
+}
+
+.urgent-badge {
+  @apply bg-red text-white text-xs px-2 py-1 rounded-full;
+}
+
+/* === Modo Oscuro - Dark Mode Mejorado === */
+@layer components {
+  /* Dropdown con soporte para dark mode */
+  .dropdown {
+    @apply dark:bg-gray-800/95 dark:border-gray-600/50 dark:backdrop-blur-sm;
+  }
+  
+  /* Selects personalizados con dark mode */
+  .select-selected {
+    @apply dark:bg-gray-800/90 dark:border-gray-600/50 dark:text-gray-200;
+  }
+  
+  .select-items {
+    @apply dark:bg-gray-800/95 dark:border-gray-600/50 dark:backdrop-blur-sm;
+  }
+  
+  .select-items div {
+    @apply dark:text-gray-200 dark:hover:bg-gray-700/70;
+  }
+  
+  .select-items div:hover,
+  .same-as-selected {
+    @apply dark:bg-gray-700/70 dark:text-white;
+  }
+  
+  .custom-select-2 .select-selected {
+    @apply dark:bg-gray-800/90 dark:text-gray-200 dark:border-gray-600/50;
+  }
+  
+  .custom-select-common .select-selected {
+    @apply dark:bg-gray-800/90 dark:text-gray-200 dark:border-gray-600/50;
+  }
+  
+  /* Botones de carrusel con dark mode */
+  .common-carousel .swiper-button-next,
+  .common-carousel .swiper-button-prev {
+    @apply dark:bg-gray-800/90 dark:text-gray-200 dark:border-gray-600/50 dark:hover:bg-blue dark:hover:text-white dark:hover:border-blue;
+  }
+  
+  /* Controles de precio con dark mode */
+  .priceSlide .noUi-handle {
+    @apply dark:bg-gray-800/90 dark:border-gray-600/50;
+  }
+  
+  .priceSlide .noUi-tooltip {
+    @apply dark:text-gray-200;
+  }
+  
+  .range-slider__thumb {
+    @apply dark:bg-gray-800/90 dark:border-gray-600/50;
+  }
+  
+  /* === Nuevas clases para modo oscuro mejorado === */
+  
+  /* Cards y contenedores con glassmorphism */
+  .dark-card {
+    @apply dark:bg-gray-800/60 dark:border-gray-700/50 dark:backdrop-blur-md;
+  }
+  
+  .dark-card-hover {
+    @apply dark:hover:bg-gray-700/70 dark:hover:border-gray-600/60;
+  }
+  
+  /* Texto optimizado para modo oscuro */
+  .dark-text-primary {
+    @apply dark:text-gray-100;
+  }
+  
+  .dark-text-secondary {
+    @apply dark:text-gray-300;
+  }
+  
+  .dark-text-muted {
+    @apply dark:text-gray-400;
+  }
+  
+  /* Botones mejorados para modo oscuro */
+  .dark-btn-primary {
+    @apply dark:bg-blue/90 dark:hover:bg-blue dark:border-blue/70 dark:hover:border-blue;
+  }
+  
+  .dark-btn-secondary {
+    @apply dark:bg-gray-700/70 dark:hover:bg-gray-600/80 dark:border-gray-600/50 dark:hover:border-gray-500/60;
+  }
+  
+  /* Input mejorado para modo oscuro */
+  .dark-input {
+    @apply dark:bg-gray-800/70 dark:border-gray-600/50 dark:text-gray-200 dark:placeholder-gray-400;
+    @apply dark:focus:border-blue/70 dark:focus:ring-blue/20;
+  }
+  
+  /* Superficies y fondos */
+  .dark-surface {
+    @apply dark:bg-gray-900/95;
+  }
+  
+  .dark-surface-elevated {
+    @apply dark:bg-gray-800/80 dark:backdrop-blur-sm;
+  }
+  
+  /* Separadores y bordes */
+  .dark-divider {
+    @apply dark:border-gray-700/60;
+  }
+  
+  .dark-border {
+    @apply dark:border-gray-600/40;
+  }
+}
+
+/* Glassmorphism para modo oscuro - versión simplificada */
+.glass-effect {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.dark .glass-effect {
+  background: rgba(17, 24, 39, 0.8);
+  border: 1px solid rgba(75, 85, 99, 0.5);
+}
+
+.glass-banner {
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dark .glass-banner {
+  background: rgba(17, 24, 39, 0.9);
+  border: 1px solid rgba(75, 85, 99, 0.3);
+}
+
+/* Efectos de degradado para dark mode - simplificados */
+.dark .gradient-blue {
+  background: linear-gradient(to right, #1f2937, #374151);
+}
+
+.dark .gradient-offer {
+  background: linear-gradient(to right, #1f2937, #374151);
+}
+
+/* Footer con degradado rojo para dark mode */
+.footer-red-gradient {
+  background: linear-gradient(135deg, 
+    rgba(248, 250, 252, 0.95) 0%, 
+    rgba(254, 242, 242, 0.9) 25%, 
+    rgba(254, 226, 226, 0.85) 50%, 
+    rgba(252, 165, 165, 0.3) 100%);
+}
+
+.dark .footer-red-gradient {
+  background: linear-gradient(135deg, 
+    rgba(17, 24, 39, 0.95) 0%, 
+    rgba(55, 65, 81, 0.9) 25%, 
+    rgba(75, 85, 99, 0.85) 50%, 
+    rgba(127, 29, 29, 0.3) 100%);
+}
+
+.footer-red-overlay {
+  background: linear-gradient(to bottom right, 
+    transparent 0%, 
+    rgba(239, 68, 68, 0.1) 50%, 
+    rgba(220, 38, 38, 0.15) 100%);
+}
+
+.dark .footer-red-overlay {
+  background: linear-gradient(to bottom right, 
+    transparent 0%, 
+    rgba(185, 28, 28, 0.2) 50%, 
+    rgba(153, 27, 27, 0.25) 100%);
 }

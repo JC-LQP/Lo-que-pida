@@ -1,10 +1,21 @@
 import React from "react";
 import Image from "next/image";
+import MagicEffects from "@/components/Common/MagicEffects";
 
 const Newsletter = () => {
   return (
     <section className="overflow-hidden">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 xl:px-0">
+        {/* <!-- promo banner big --> */}
+        <MagicEffects 
+          enableParticles={true}
+          enableTilt={true}
+          enableMagnetism={true}
+          enableClickRipple={true}
+          enableGlow={true}
+          particleCount={8}
+          className="mb-7.5"
+        >
         <div className="relative z-1 overflow-hidden rounded-xl">
           {/* <!-- bg shapes --> */}
           <Image
@@ -48,6 +59,7 @@ const Newsletter = () => {
             </div>
           </div>
         </div>
+      </MagicEffects>
       </div>
     </section>
   );

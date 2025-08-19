@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { selectTotalPrice } from "@/redux/features/cart-slice";
 import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
 import Image from "next/image";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -49,8 +50,8 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed left-0 top-0 w-full z-9999 bg-white transition-all ease-in-out duration-300 ${
-        stickyMenu && "shadow"
+      className={`fixed left-0 top-0 w-full z-9999 bg-white dark:bg-gray-900 transition-all ease-in-out duration-300 ${
+        stickyMenu && "shadow dark:shadow-gray-800"
       }`}
     >
       <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16">
@@ -88,7 +89,7 @@ const Header = () => {
                       id="search"
                       placeholder="I am shopping for..."
                       autoComplete="off"
-                      className="custom-search w-full rounded-r-[5px] bg-gray-1 !border-l-0 border border-gray-3 py-2.5 pl-4 pr-10 outline-none ease-in duration-200"
+                      className="custom-search dark-input w-full rounded-r-[5px] bg-gray-1 !border-l-0 border border-gray-3 py-2.5 pl-4 pr-10 outline-none ease-in duration-200"
                     />
 
                     <button
@@ -155,10 +156,12 @@ const Header = () => {
             </div>
 
             {/* <!-- divider --> */}
-            <span className="hidden xl:block w-px h-7.5 bg-gray-4"></span>
+            <span className="hidden xl:block w-px h-7.5 bg-gray-4 dark:bg-gray-600"></span>
 
             <div className="flex w-full lg:w-auto justify-between items-center gap-5">
               <div className="flex items-center gap-5">
+                {/* Theme Toggle */}
+                <ThemeToggle size="md" className="hidden lg:flex" />
                 <Link href="/signin" className="flex items-center gap-2.5">
                   <svg
                     width="24"
@@ -380,6 +383,15 @@ const Header = () => {
                       />
                     </svg>
                     Wishlist
+                  </Link>
+                </li>
+
+                <li className="py-4">
+                  <Link
+                    href="/shop?filter=offers"
+                    className="btn-offer font-medium text-custom-sm"
+                  >
+                    Ofertas Especiales
                   </Link>
                 </li>
               </ul>

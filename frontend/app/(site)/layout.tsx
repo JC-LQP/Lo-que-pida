@@ -17,7 +17,7 @@ import ScrollToTop from "@/components/Common/ScrollToTop";
 import PreLoader from "@/components/Common/PreLoader";
 
 // Efectos de IconRain
-import IconRainWrapper from "@/components/effects/IconRainWrapper";
+import IconRain from "@/components/effects/IconRain";
 
 export default function RootLayout({
   children,
@@ -53,7 +53,7 @@ export default function RootLayout({
             </ReduxProvider>
             
             {/* Efectos de fondo */}
-            <IconRainWrapper />
+            <IconRain />
             
             <ScrollToTop />
             <Footer />
