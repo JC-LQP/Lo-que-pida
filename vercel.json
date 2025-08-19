@@ -1,20 +1,12 @@
 {
-  "buildCommand": "pnpm build",
+  "buildCommand": "pnpm --filter lo-que-pida-frontend build",
   "outputDirectory": "frontend/.next",
-  "installCommand": "npm_config_registry=https://registry.npmjs.org pnpm install --registry=https://registry.npmjs.org --no-frozen-lockfile",
+  "installCommand": "pnpm install --frozen-lockfile",
   "framework": "nextjs",
-  "functions": {
-    "app/api/**/*.js": {
-      "runtime": "nodejs20.x"
-    }
-  },
   "build": {
     "env": {
       "PNPM_VERSION": "9.15.0",
-      "NODE_VERSION": "20.18.0",
-      "npm_config_registry": "https://registry.npmjs.org",
-      "PNPM_REGISTRY": "https://registry.npmjs.org",
-      "NPM_CONFIG_REGISTRY": "https://registry.npmjs.org"
+      "NODE_VERSION": "20"
     }
   }
 }
