@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 const ECOMMERCE_ICONS = [
   'award.svg',
@@ -44,7 +44,7 @@ export default function IconRain({
   opacity = 0.6 
 }: IconRainProps) {
 
-  const createIcon = () => {
+  const createIcon = useCallback(() => {
     const iconPath = ECOMMERCE_ICONS[Math.floor(Math.random() * ECOMMERCE_ICONS.length)];
     
     const img = document.createElement('img');
@@ -121,7 +121,7 @@ export default function IconRain({
       }
       style.remove();
     }, duration + 500);
-  };
+  }, [speed, size, opacity]);
 
   useEffect(() => {
     if (!enabled) return;
@@ -138,7 +138,7 @@ export default function IconRain({
     return () => {
       clearInterval(interval);
     };
-  }, [enabled, intensity, speed, size, opacity]);
+  }, [enabled, intensity, speed, size, opacity, createIcon]);
 
 
   return enabled ? null : null;
