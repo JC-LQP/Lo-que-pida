@@ -41,11 +41,3 @@ coverage
 # Cache
 .cache
 .eslintcache
-
-# Ignore backend to prevent Prisma conflicts
-backend/
-
-# Ignore pnpm workspace files
-pnpm-workspace.yaml
-pnpm-lock.yaml
-.eslintcache

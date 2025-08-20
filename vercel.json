@@ -1,8 +1,5 @@
 {
   "version": 2,
-  "buildCommand": "cd frontend && npm install --no-package-lock && npm run build",
-  "outputDirectory": "frontend/.next",
-  "installCommand": "echo 'Custom install handled in buildCommand'",
   "builds": [
     {
       "src": "frontend/package.json",
