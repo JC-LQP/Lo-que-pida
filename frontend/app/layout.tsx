@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./css/style.css";
 import "./css/euclid-circular-a-font.css";
+import ClientRootLayout from "./ClientRootLayout";
 
 export const metadata: Metadata = {
   title: "Lo Que Pida | E-commerce Platform",
@@ -14,7 +15,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <ClientRootLayout>
+          {children}
+        </ClientRootLayout>
+      </body>
     </html>
   );
 }
