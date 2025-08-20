@@ -1,0 +1,7 @@
+registry=https://registry.npmjs.org/
+auto-install-peers=true
+strict-peer-dependencies=false
+network-timeout=60000
+fetch-retries=3
+fetch-retry-mintimeout=2000
+fetch-retry-maxtimeout=10000
