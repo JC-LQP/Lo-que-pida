@@ -1,8 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['images.unsplash.com'], // Add any other image domains you're using
-    unoptimized: true, // This can help with initial deployment issues
+    unoptimized: true,
+  },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.(woff|woff2|eot|ttf|otf)$/i,
+      type: 'asset/resource',
+    });
+    return config;
   },
   typescript: {
     ignoreBuildErrors: true, // Temporarily ignore TS errors during build
