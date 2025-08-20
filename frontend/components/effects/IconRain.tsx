@@ -7,7 +7,7 @@ const ECOMMERCE_ICONS = [
   'camera.svg',
   'clock.svg',
   'credit-card.svg',
-  'dollar.svg',
+  'dollar-sign.svg',
   'gift.svg',
   'headphones.svg',
   'heart.svg',

@@ -1,12 +1,13 @@
 {
   "buildCommand": "pnpm --filter lo-que-pida-frontend build",
   "outputDirectory": "frontend/.next",
-  "installCommand": "pnpm install --no-frozen-lockfile",
+  "installCommand": "pnpm install --no-frozen-lockfile --registry=https://registry.npmjs.org/",
   "framework": "nextjs",
   "build": {
     "env": {
       "PNPM_VERSION": "9.15.0",
-      "NODE_VERSION": "20"
+      "NODE_VERSION": "22",
+      "NPM_CONFIG_REGISTRY": "https://registry.npmjs.org/"
     }
   }
 }
