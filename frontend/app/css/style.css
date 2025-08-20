@@ -3,6 +3,187 @@
 @tailwind utilities;
 
 @layer base {
+  /* Variables del preloader */
+  :root {
+    --bg: #f2f1ef;
+    --fg: #111;
+    --blue: #1a73e8;
+    --red: #d93025;
+    --white: #ffffff;
+    --track: rgba(0, 0, 0, 0.15);
+    --road-gray: #111;
+    --dash-gray: #fff;
+    --trans-dur: 0.3s;
+  }
+
+  /* Preloader con carrito */
+  .preloader {
+    text-align: center;
+    max-width: 220px;
+    width: 100%;
+    height: 140px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+  }
+
+  /* Carretera horizontal debajo de las ruedas */
+  .cart__road {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 190px;
+    height: 20px;
+    background: var(--road-gray);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.1);
+    z-index: 1;
+  }
+
+  .cart__road::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: repeating-linear-gradient(
+      to right,
+      var(--dash-gray),
+      var(--dash-gray) 20px,
+      transparent 20px,
+      transparent 40px
+    );
+    transform: translateY(-50%);
+    animation: dashMove 1.5s linear infinite;
+    z-index: 2;
+  }
+
+  /* Líneas de movimiento */
+  .cart__motion {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    width: 50px;
+    height: 140px;
+    position: relative;
+    z-index: 3;
+  }
+
+  .cart__motion line {
+    stroke: rgba(0, 0, 0, 0.5);
+    stroke-width: 6;
+    stroke-linecap: round;
+    animation: motion 1.2s linear infinite;
+  }
+
+  .cart__motion line:nth-child(1) { animation-delay: 0s; }
+  .cart__motion line:nth-child(2) { animation-delay: 0.2s; }
+  .cart__motion line:nth-child(3) { animation-delay: 0.4s; }
+
+  /* Carrito */
+  .cart {
+    display: block;
+    width: 128px;
+    height: 128px;
+    z-index: 4;
+    position: relative;
+  }
+
+  .cart__lines { stroke: var(--blue); }
+  .cart__top { stroke: var(--red); }
+  .cart__wheel1 .cart__wheel-stroke { stroke: var(--white); }
+  .cart__wheel2 .cart__wheel-stroke { stroke: var(--blue); }
+  .cart__track { stroke: var(--track); }
+
+  .cart__lines,
+  .cart__top,
+  .cart__wheel1,
+  .cart__wheel2,
+  .cart__wheel-stroke {
+    animation: cartLines 2s ease-in-out infinite;
+  }
+
+  .cart__top { animation-name: cartTop; }
+  .cart__wheel1 { 
+    animation-name: cartWheel1; 
+    transform-origin: 43px 111px; 
+  }
+  .cart__wheel2 { 
+    animation-name: cartWheel2; 
+    transform-origin: 102px 111px; 
+  }
+  .cart__wheel-stroke { animation-name: cartWheelStroke; }
+
+  @keyframes cartLines { from, to { opacity: 0; } 8%, 92% { opacity: 1; } }
+  @keyframes cartTop { from { stroke-dashoffset: -338; } 50% { stroke-dashoffset: 0; } to { stroke-dashoffset: 338; } }
+  @keyframes cartWheel1 { from { transform: rotate(-0.25turn); } to { transform: rotate(2.75turn); } }
+  @keyframes cartWheel2 { from { transform: rotate(0.25turn); } to { transform: rotate(3.25turn); } }
+  @keyframes cartWheelStroke { from, to { stroke-dashoffset: 81.68; } 50% { stroke-dashoffset: 40.84; } }
+  @keyframes motion { from { transform: translateX(0); opacity: 0.8; } to { transform: translateX(-40px); opacity: 0; } }
+  @keyframes dashMove { 0% { background-position: 0 0; } 100% { background-position: 40px 0; } }
+
+  /* LOQUEPIDA con hideAndSeek y colores */
+  .loader {
+    --ANIMATION-DELAY-MULTIPLIER: 70ms;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    gap: 0.25rem;
+  }
+
+  .loader span {
+    display: inline-block;
+    font-family: 'Euclid Circular A';
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+    transform: translateY(100%);
+    animation: hideAndSeek 1s alternate infinite cubic-bezier(0.86, 0, 0.07, 1);
+  }
+
+  .loader .white { 
+    color: #ffffff; 
+    -webkit-text-stroke: 1.5px #aaaaaa;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .loader .red { 
+    color: #d93025; 
+    text-shadow: 2px 2px 4px rgba(217, 48, 37, 0.2);
+  }
+  .loader .blue { 
+    color: #1a73e8; 
+    text-shadow: 2px 2px 4px rgba(26, 115, 232, 0.2);
+  }
+
+  /* Delays */
+  .loader span:nth-child(1) { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 0); }
+  .loader span:nth-child(2) { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 1); }
+  .loader span:nth-child(3) { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 2); }
+  .loader span:nth-child(4) { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 3); }
+  .loader span:nth-child(5) { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 4); }
+  .loader span:nth-child(6) { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 5); }
+  .loader span:nth-child(7) { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 6); }
+  .loader span:nth-child(8) { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 7); }
+  .loader span:nth-child(9) { animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 8); }
+
+  @keyframes hideAndSeek {
+    0% { 
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% { 
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
   html {
     @apply scroll-smooth;
   }

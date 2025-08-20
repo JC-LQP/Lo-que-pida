@@ -129,6 +129,49 @@ const config: Config = {
       ...defaultTheme.screens,
     },
     extend: {
+      keyframes: {
+        hideAndSeek: {
+          '0%': { transform: 'translateY(4rem)' },
+          '100%': { transform: 'translateY(0rem)' }
+        },
+        dashMove: {
+          '0%': { backgroundPosition: '0 0' },
+          '100%': { backgroundPosition: '40px 0' }
+        },
+        motion: {
+          'from': { transform: 'translateX(0)', opacity: '0.8' },
+          'to': { transform: 'translateX(-40px)', opacity: '0' }
+        },
+        cartLines: {
+          'from, to': { opacity: '0' },
+          '8%, 92%': { opacity: '1' }
+        },
+        cartTop: {
+          'from': { strokeDashoffset: '-338' },
+          '50%': { strokeDashoffset: '0' },
+          'to': { strokeDashoffset: '338' }
+        },
+        cartWheel1: {
+          'from': { transform: 'rotate(-0.25turn)' },
+          'to': { transform: 'rotate(2.75turn)' }
+        },
+        cartWheel2: {
+          'from': { transform: 'rotate(0.25turn)' },
+          'to': { transform: 'rotate(3.25turn)' }
+        },
+        cartWheelStroke: {
+          'from, to': { strokeDashoffset: '81.68' },
+          '50%': { strokeDashoffset: '40.84' }
+        }
+      },
+      animation: {
+        hideAndSeek: 'hideAndSeek 1s alternate infinite cubic-bezier(0.86,0,0.07,1)',
+        cartLines: 'cartLines 2s ease-in-out infinite',
+        cartTop: 'cartTop 2s ease-in-out infinite',
+        cartWheel1: 'cartWheel1 2s ease-in-out infinite',
+        cartWheel2: 'cartWheel2 2s ease-in-out infinite',
+        cartWheelStroke: 'cartWheelStroke 2s ease-in-out infinite'
+      },
       fontSize: {
         "2xs": ["10px", "17px"],
         "heading-1": ["60px", "72px"],
