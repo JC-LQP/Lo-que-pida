@@ -5,7 +5,9 @@
     "start": "pnpm --filter lo-que-pida-frontend start",
     "dev": "pnpm --recursive dev",
     "build:all": "pnpm --recursive build",
-    "build:npm": "npm install --prefix frontend && npm run build --prefix frontend"
+    "build:npm": "npm install --prefix frontend && npm run build --prefix frontend",
+    "vercel-build": "cd frontend && npm install && npm run build",
+    "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "dependencies": {
     "@apollo/client": "^3.13.9",
