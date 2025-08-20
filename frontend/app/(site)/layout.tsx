@@ -1,7 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import "../css/euclid-circular-a-font.css";
-import "../css/style.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
@@ -19,7 +17,7 @@ import PreLoader from "@/components/Common/PreLoader";
 // Efectos de IconRain
 import IconRain from "@/components/effects/IconRain";
 
-export default function RootLayout({
+export default function SiteLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -31,35 +29,33 @@ export default function RootLayout({
   }, []);
 
   return (
-    <html lang="en" suppressHydrationWarning={true}>
-      <body>
-        {loading ? (
-          <PreLoader />
-        ) : (
-          <>
-            <ReduxProvider>
-              <CartModalProvider>
-                <ModalProvider>
-                  <PreviewSliderProvider>
-                    <Header />
-                    {children}
+    <>
+      {loading ? (
+        <PreLoader />
+      ) : (
+        <>
+          <ReduxProvider>
+            <CartModalProvider>
+              <ModalProvider>
+                <PreviewSliderProvider>
+                  <Header />
+                  {children}
 
-                    <QuickViewModal />
-                    <CartSidebarModal />
-                    <PreviewSliderModal />
-                  </PreviewSliderProvider>
-                </ModalProvider>
-              </CartModalProvider>
-            </ReduxProvider>
-            
-            {/* Efectos de fondo */}
-            <IconRain />
-            
-            <ScrollToTop />
-            <Footer />
-          </>
-        )}
-      </body>
-    </html>
+                  <QuickViewModal />
+                  <CartSidebarModal />
+                  <PreviewSliderModal />
+                </PreviewSliderProvider>
+              </ModalProvider>
+            </CartModalProvider>
+          </ReduxProvider>
+          
+          {/* Efectos de fondo */}
+          <IconRain />
+          
+          <ScrollToTop />
+          <Footer />
+        </>
+      )}
+    </>
   );
 }
