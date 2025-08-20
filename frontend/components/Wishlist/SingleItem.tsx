@@ -1,6 +1,6 @@
 import React from "react";
-import { AppDispatch } from "@/redux/store";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/redux/store";
+
 
 import { removeItemFromWishlist } from "@/redux/features/wishlist-slice";
 import { addItemToCart } from "@/redux/features/cart-slice";
@@ -8,7 +8,7 @@ import { addItemToCart } from "@/redux/features/cart-slice";
 import Image from "next/image";
 
 const SingleItem = ({ item }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const handleRemoveFromWishlist = () => {
     dispatch(removeItemFromWishlist(item.id));

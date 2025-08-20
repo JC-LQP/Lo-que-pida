@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { AppDispatch } from "@/redux/store";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/redux/store";
 import {
   removeItemFromCart,
   updateCartItemQuantity,
@@ -11,7 +10,7 @@ import Image from "next/image";
 const SingleItem = ({ item }) => {
   const [quantity, setQuantity] = useState(item.quantity);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const handleRemoveFromCart = () => {
     dispatch(removeItemFromCart(item.id));

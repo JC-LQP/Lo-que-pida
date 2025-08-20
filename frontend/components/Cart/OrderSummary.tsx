@@ -1,11 +1,10 @@
 import { selectTotalPrice } from "@/redux/features/cart-slice";
 import { useAppSelector } from "@/redux/store";
 import React from "react";
-import { useSelector } from "react-redux";
 
 const OrderSummary = () => {
   const cartItems = useAppSelector((state) => state.cartReducer.items);
-  const totalPrice = useSelector(selectTotalPrice);
+  const totalPrice = useAppSelector(selectTotalPrice);
 
   return (
     <div className="lg:max-w-[455px] w-full">

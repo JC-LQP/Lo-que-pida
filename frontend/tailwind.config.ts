@@ -11,9 +11,6 @@ const config: Config = {
   ],
   darkMode: "class",
   theme: {
-    fontFamily: {
-      "euclid-circular-a": ["Euclid Circular A"],
-    },
     container: {
       center: true,
       padding: {
@@ -129,6 +126,9 @@ const config: Config = {
       ...defaultTheme.screens,
     },
     extend: {
+      fontFamily: {
+        "euclid-circular-a": ["Euclid Circular A", ...defaultTheme.fontFamily.sans],
+      },
       fontSize: {
         "2xs": ["10px", "17px"],
         "heading-1": ["60px", "72px"],
