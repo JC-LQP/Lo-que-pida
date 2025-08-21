@@ -165,12 +165,12 @@ const config: Config = {
         }
       },
       animation: {
-        hideAndSeek: 'hideAndSeek 3.5s alternate infinite cubic-bezier(0.86,0,0.07,1)',
-        cartLines: 'cartLines 3.5s ease-in-out infinite',
-        cartTop: 'cartTop 3.5s ease-in-out infinite',
-        cartWheel1: 'cartWheel1 3.5s ease-in-out infinite',
-        cartWheel2: 'cartWheel2 3.5s ease-in-out infinite',
-        cartWheelStroke: 'cartWheelStroke 3.5s ease-in-out infinite'
+        hideAndSeek: 'hideAndSeek 0.5s alternate infinite cubic-bezier(0.86,0,0.07,1)',
+        cartLines: 'cartLines 0.5s ease-in-out infinite',
+        cartTop: 'cartTop 0.5s ease-in-out infinite',
+        cartWheel1: 'cartWheel1 0.5s ease-in-out infinite',
+        cartWheel2: 'cartWheel2 0.5s ease-in-out infinite',
+        cartWheelStroke: 'cartWheelStroke 0.5s ease-in-out infinite'
       },
       fontSize: {
         "2xs": ["10px", "17px"],
